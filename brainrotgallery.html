@@ -2,168 +2,151 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>CRITICAL_SYSTEM_FAILURE // ROSTER_OVERWRITE</title>
+    <title>THE ROSTER // REQUISITION_PORTAL</title>
     <style>
-        :root { --r: #ff0000; --b: #000; --w: #fff; --g: #0f0; --y: #ff0; }
-        body, html { 
-            background: var(--b); margin: 0; padding: 0; 
-            width: 100vw; height: 100vh; overflow: hidden;
-            font-family: 'Impact', sans-serif; cursor: none;
+        :root { --gold: #af944d; --dark: #050505; --red: #660000; --card: #121212; }
+        body { 
+            background: var(--dark); color: #888; font-family: 'Times New Roman', serif; 
+            margin: 0; padding: 40px; display: flex; flex-direction: column; align-items: center;
         }
 
-        /* 1. THE DEBT WALL - Thousands of lines of flickering text */
-        #text-wall {
-            position: fixed; inset: 0; z-index: 1; opacity: 0.15;
-            color: var(--r); font-size: 1.2rem; line-height: 0.9;
-            pointer-events: none; word-break: break-all;
+        h1 { color: var(--gold); font-size: 2.5rem; letter-spacing: 8px; border-bottom: 2px solid var(--gold); margin-bottom: 50px; }
+
+        .master-group { width: 100%; max-width: 1100px; margin-bottom: 60px; }
+        .master-label { 
+            font-size: 1.8rem; color: var(--gold); margin-bottom: 20px; 
+            text-transform: uppercase; border-left: 4px solid var(--red); padding-left: 15px;
         }
 
-        /* 2. THE DYNAMIC GRID - GitHub Feed */
-        #grid {
-            position: fixed; inset: 0; display: grid;
-            grid-template-columns: repeat(4, 1fr); grid-template-rows: repeat(4, 1fr);
-            z-index: 5; filter: contrast(1.5) saturate(1.5);
-        }
-        .cell { border: 1px solid #222; position: relative; overflow: hidden; }
-        .cell img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.05s; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 30px; }
 
-        /* 3. THE "GLITCH" OVERLAYS */
-        .glitch-bar {
-            position: fixed; width: 100%; height: 2px; background: var(--w);
-            z-index: 1000; pointer-events: none; opacity: 0.5;
+        /* The Tribute Card */
+        .card {
+            background: var(--card); height: 350px; border: 1px solid #222;
+            position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.8);
         }
 
-        /* 4. THE INTERFACE - Aggressive UI */
-        #ui {
-            position: fixed; top: 0; width: 100%; background: var(--r);
-            color: #000; padding: 10px; z-index: 10000;
-            display: flex; justify-content: space-between; font-size: 3rem;
-            border-bottom: 10px solid var(--w); box-shadow: 0 10px 50px var(--r);
+        .master-img { width: 100%; height: 100%; object-fit: cover; filter: blur(50px) brightness(0.2); transition: 1s ease; }
+        .unlocked { filter: blur(0px) brightness(1) !important; }
+
+        /* The Overlay */
+        .overlay {
+            position: absolute; inset: 0; display: flex; flex-direction: column;
+            align-items: center; justify-content: center; z-index: 10;
+            background: rgba(0,0,0,0.6); transition: 0.5s;
         }
 
-        /* 5. THE PUNISHMENT PULSE */
-        #strobe {
-            position: fixed; inset: 0; z-index: 5000; pointer-events: none;
-            mix-blend-mode: difference; opacity: 0;
+        .price-tag { color: var(--gold); font-size: 1.2rem; margin-bottom: 10px; font-weight: bold; }
+        
+        .pay-btn {
+            background: transparent; border: 1px solid var(--gold); color: var(--gold);
+            padding: 12px 25px; cursor: pointer; text-transform: uppercase; letter-spacing: 2px;
+            transition: 0.3s;
         }
-        .flash { animation: strobe-anim 0.03s infinite; }
-        @keyframes strobe-anim { 0% { opacity: 1; } 100% { opacity: 0; } }
+        .pay-btn:hover { background: var(--gold); color: black; }
 
-        /* 6. POPUP GHOSTS - Random commands that block the view */
-        .popup {
-            position: fixed; padding: 20px; background: var(--w); color: #000;
-            border: 5px solid var(--r); font-size: 2rem; z-index: 8000;
-            animation: drift 2s forwards;
+        /* Session Stats */
+        #stat-bar {
+            position: fixed; top: 0; width: 100%; background: #000; border-bottom: 1px solid #333;
+            display: flex; justify-content: space-around; padding: 15px; font-size: 1.2rem; z-index: 1000;
         }
-        @keyframes drift { from { transform: scale(0.5); opacity: 1; } to { transform: scale(1.5); opacity: 0; } }
-
+        .val { color: var(--gold); font-weight: bold; }
+        
+        .timer-display { position: absolute; top: 10px; right: 10px; color: var(--red); font-weight: bold; display: none; }
     </style>
 </head>
-<body onmousemove="resetDecay()" onkeydown="resetDecay()">
+<body>
 
-    <div id="text-wall"></div>
-    <div id="ui">
-        <span>SYSTEM_DEBT: $<span id="debt">0</span></span>
-        <span>AUTH_STATUS: <span id="auth">LOCKED</span></span>
+    <div id="stat-bar">
+        <div>SESSION DEBT: <span class="val">$<span id="debt">0.00</span></span></div>
+        <div>STATUS: <span class="val" id="status">UNWORTHY</span></div>
     </div>
-    <div id="strobe"></div>
-    <div id="grid"></div>
+
+    <h1>THE ROSTER</h1>
+
+    <div class="master-group">
+        <div class="master-label">Master 1 // Primary</div>
+        <div class="grid" id="grid-1"></div>
+    </div>
+
+    <div class="master-group">
+        <div class="master-label">Master 2 // Secondary</div>
+        <div class="grid" id="grid-2"></div>
+    </div>
 
     <script>
-        // --- CONFIGURATION ---
-        const ghBase = "https://github.com/dontevenbothernothingishere/system-task-logs-or-css-sandbox-v2.";
-        const images = ["4489.png", "4491.png", "4493.png", "sapnapfeet_02.jpg", "sapnapfeet_01.jpg"]; // ADD ALL 100+ HERE
-        const commands = ["OBEY", "DRAIN", "SUBMIT", "PUNISH", "KNEEL", "PAY", "VOID", "USER_DELETED"];
+        // Update these with your GitHub links
+        const ghBase = "https://raw.githubusercontent.com/USER/REPO/main/";
         
-        let debt = 0;
-        let activity = 100;
-
-        // --- 1. INITIALIZE THE WALL OF ROT ---
-        function initWall() {
-            const wall = document.getElementById('text-wall');
-            let content = "";
-            for(let i=0; i<5000; i++) {
-                content += commands[Math.floor(Math.random()*commands.length)] + " ";
-            }
-            wall.innerText = content;
-        }
-
-        // --- 2. BUILD THE GRID ---
-        function initGrid() {
-            const grid = document.getElementById('grid');
-            for(let i=0; i<16; i++) {
-                grid.innerHTML += `<div class="cell"><img id="img${i}" src="${ghBase + images[i % images.length]}"></div>`;
-            }
-        }
-
-        // --- 3. THE SENSORY ENGINE ---
-        function engine() {
-            debt += 125.50;
-            activity -= 2; // Sight rots constantly
-            
-            document.getElementById('debt').innerText = Math.floor(debt).toLocaleString();
-            
-            const g = document.getElementById('grid');
-            const s = document.getElementById('strobe');
-            const a = document.getElementById('auth');
-
-            // Visual Punishment Logic
-            if (activity < 70) {
-                g.style.filter = `blur(${50 - activity}px) brightness(0.2) grayscale(1)`;
-                a.innerText = "WARNING"; a.style.color = "yellow";
-            } else {
-                g.style.filter = "contrast(1.8) brightness(1.2)";
-                a.innerText = "HD_ACTIVE"; a.style.color = "white";
-            }
-
-            if (activity < 30) {
-                s.classList.add('flash');
-                a.innerText = "REVOKED"; a.style.color = "red";
-            } else {
-                s.classList.remove('flash');
-            }
-
-            if (activity < 0) activity = 0;
-
-            // Random Glitch Bar
-            if (Math.random() > 0.95) {
-                const bar = document.createElement('div');
-                bar.className = 'glitch-bar';
-                bar.style.top = Math.random() * 100 + "vh";
-                document.body.appendChild(bar);
-                setTimeout(() => bar.remove(), 50);
-            }
-        }
-
-        function resetDecay() {
-            activity = 100;
-            if (Math.random() > 0.8) spawnPopup();
-        }
-
-        function spawnPopup() {
-            const p = document.createElement('div');
-            p.className = 'popup';
-            p.innerText = commands[Math.floor(Math.random()*commands.length)];
-            p.style.top = Math.random() * 80 + "vh";
-            p.style.left = Math.random() * 80 + "vw";
-            document.body.appendChild(p);
-            setTimeout(() => p.remove(), 1000);
-            
-            // Force random image swap on interaction
-            const idx = Math.floor(Math.random() * 16);
-            document.getElementById(`img${idx}`).src = ghBase + images[Math.floor(Math.random()*images.length)];
-        }
-
-        // Run everything
-        window.onload = () => {
-            initWall();
-            initGrid();
-            setInterval(engine, 50);
-            setInterval(() => { // High speed jitter
-                const idx = Math.floor(Math.random() * 16);
-                document.getElementById(`img${idx}`).style.transform = `translate(${(Math.random()-0.5)*30}px, ${(Math.random()-0.5)*30}px) scale(1.2)`;
-            }, 100);
+        const roster = {
+            m1: ["1773158742576.jpeg", "p2.jpg", "p3.jpg"],
+            m2: ["p4.jpg", "p5.jpg", "p6.jpg"]
         };
+
+        let sessionDebt = 0;
+
+        function build() {
+            Object.keys(roster).forEach((m, i) => {
+                const grid = document.getElementById(`grid-${i+1}`);
+                roster[m].forEach((img, idx) => {
+                    grid.innerHTML += `
+                        <div class="card" id="card-${m}-${idx}">
+                            <div class="timer-display" id="timer-${m}-${idx}">60s</div>
+                            <div class="overlay" id="overlay-${m}-${idx}">
+                                <div class="price-tag">TRIBUTE: $50.00</div>
+                                <button class="pay-btn" onclick="requisition('${m}', ${idx})">Authorize View</button>
+                            </div>
+                            <img src="${ghBase + img}" class="master-img" id="img-${m}-${idx}">
+                        </div>
+                    `;
+                });
+            });
+        }
+
+        function requisition(m, idx) {
+            // Update Debt
+            sessionDebt += 50.00;
+            document.getElementById('debt').innerText = sessionDebt.toFixed(2);
+            document.getElementById('status').innerText = "AUTHORIZED";
+
+            // Unlock Image
+            const overlay = document.getElementById(`overlay-${m}-${idx}`);
+            const img = document.getElementById(`img-${m}-${idx}`);
+            const timer = document.getElementById(`timer-${m}-${idx}`);
+            
+            overlay.style.opacity = "0";
+            overlay.style.pointerEvents = "none";
+            img.classList.add('unlocked');
+            timer.style.display = "block";
+
+            // The Re-Lock Timer (60 Seconds)
+            let timeLeft = 60;
+            const countdown = setInterval(() => {
+                timeLeft--;
+                timer.innerText = timeLeft + "s";
+                if (timeLeft <= 0) {
+                    clearInterval(countdown);
+                    lock(m, idx);
+                }
+            }, 1000);
+        }
+
+        function lock(m, idx) {
+            const overlay = document.getElementById(`overlay-${m}-${idx}`);
+            const img = document.getElementById(`img-${m}-${idx}`);
+            const timer = document.getElementById(`timer-${m}-${idx}`);
+            
+            overlay.style.opacity = "1";
+            overlay.style.pointerEvents = "auto";
+            img.classList.remove('unlocked');
+            timer.style.display = "none";
+            timer.innerText = "60s";
+            document.getElementById('status').innerText = "UNWORTHY";
+        }
+
+        window.onload = build;
     </script>
 </body>
 </html>
+
