@@ -2,38 +2,389 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>TERMINAL v14.0</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TERMINAL: TOTAL RUINATION v2.7.0 (EXPANDED ROSTER)</title>
     <style>
-        :root { --blue: #1d9bf0; --red: #ff4d4d; --bg: #000; }
-        body { background: var(--bg); color: #fff; font-family: monospace; margin: 0; display: flex; flex-direction: column; height: 100dvh; overflow: hidden; }
-        .top-bar { background: #0a0a0a; border-bottom: 1px solid #333; display: grid; grid-template-columns: 1fr 1fr; padding: 15px; }
-        .inbox { display: flex; overflow-x: auto; background: #050505; border-bottom: 1px solid #333; padding: 10px; gap: 15px; }
-        .pfp { width: 45px; height: 45px; border-radius: 50%; border: 2px solid #333; background: #222; }
-        .active .pfp { border-color: var(--blue); }
-        #chat-box { flex: 1; overflow-y: auto; padding: 15px; display: flex; flex-direction: column; gap: 10px; }
-        .msg { max-width: 85%; padding: 10px; border-radius: 10px; font-size: 0.9rem; }
-        .user-msg { align-self: flex-end; background: #111; color: #666; }
-        .dom-msg { align-self: flex-start; background: #0d1926; color: #fff; border-left: 3px solid var(--blue); }
-        #loading { display: none; color: var(--blue); font-size: 0.7rem; padding: 10px; text-align: center; }
-        .input-area { padding: 15px; background: #0a0a0a; border-top: 1px solid #333; display: flex; gap: 10px; }
-        #chat-in { flex: 1; background: #000; border: 1px solid #444; color: #fff; padding: 12px; }
-        button { background: var(--blue); border: none; color: #fff; padding: 0 20px; font-weight: bold; }
+        :root { --blue: #1d9bf0; --red: #ff4d4d; --gold: #ffd700; --green: #28a745; --bg: #000; --panel: #0a0a0a; }
+        body { background: var(--bg); color: #fff; font-family: 'Segoe UI', sans-serif; margin: 0; display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
+        
+        @keyframes pulseRed { 0% { box-shadow: inset 0 0 10px #f00; } 50% { box-shadow: inset 0 0 100px #f00; } 100% { box-shadow: inset 0 0 10px #f00; } }
+        .ruining-active { animation: pulseRed 2s infinite; }
+        .distraction-flash { box-shadow: inset 0 0 150px rgba(255, 0, 0, 0.9) !important; transition: 0.2s; }
+        
+        .top-bar { background: var(--panel); border-bottom: 1px solid #222; padding: 10px 25px; display: flex; justify-content: space-between; align-items: center; z-index: 10; }
+        .stat h2 { margin: 0; font-family: monospace; font-size: 1.8rem; }
+        .stat p { margin: 0; font-size: 0.65rem; color: #666; text-transform: uppercase; }
+
+        /* NEW NAV BAR FOR FUTURE PAGES */
+        .nav-links { background: #050505; border-bottom: 1px solid #222; padding: 10px 25px; display: flex; gap: 20px; font-family: monospace; font-size: 0.85rem; }
+        .nav-links a { color: #666; text-decoration: none; transition: 0.2s; font-weight: bold; }
+        .nav-links a:hover { color: var(--gold); }
+        .nav-links a.active { color: var(--blue); }
+        
+        .main-container { display: grid; grid-template-columns: 250px 300px 1fr 350px; flex-grow: 1; overflow: hidden; }
+        
+        .burn-log { background: #030303; border-right: 1px solid #222; overflow-y: auto; font-family: monospace; font-size: 0.75rem; padding: 10px; color: #444; }
+        .log-entry { margin-bottom: 5px; border-bottom: 1px solid #111; padding-bottom: 2px; }
+        .log-entry.negative { color: var(--red); }
+        .log-entry.positive { color: #0f0; }
+
+        .inbox { background: #050505; border-right: 1px solid #222; overflow-y: auto; }
+        .inbox-item { padding: 12px; border-bottom: 1px solid #111; cursor: pointer; border-left: 4px solid transparent; display: flex; align-items: center; transition: 0.2s; }
+        .inbox-item img { width: 45px; height: 45px; border-radius: 50%; margin-right: 12px; object-fit: cover; border: 1px solid #333; }
+        .inbox-item.active { background: #0d1926; border-left-color: var(--blue); }
+        .inbox-item.ping { border-left-color: var(--red); background: rgba(255,0,0,0.3); animation: blink 0.5s infinite; }
+        
+        @keyframes blink { 0% { opacity: 1; } 50% { opacity: 0.5; } }
+        
+        .chat-section { display: flex; flex-direction: column; border-right: 1px solid #222; position: relative; height: 100%; overflow: hidden; }
+        #chat-box { flex-grow: 1; padding: 20px; overflow-y: scroll; display: flex; flex-direction: column; gap: 12px; background: #000; scroll-behavior: smooth; }
+        
+        .msg { max-width: 85%; padding: 12px; border-radius: 8px; font-size: 0.95rem; line-height: 1.5; word-wrap: break-word; white-space: pre-wrap; }
+        .user-msg { align-self: flex-end; background: #111; color: #777; border: 1px solid #222; }
+        .dom-msg { align-self: flex-start; background: #001a2c; border-left: 4px solid var(--blue); color: #e0e0e0; }
+        
+        .command-panel { background: #050505; padding: 20px; display: flex; flex-direction: column; text-align: center; }
+        #task-display { font-size: 1.1rem; font-weight: bold; color: var(--gold); background: #111; padding: 15px; border-radius: 8px; min-height: 140px; border: 1px solid #222; display: flex; align-items: center; justify-content: center; }
+        #timer { font-size: 5rem; font-family: monospace; color: var(--red); margin: 20px 0; }
+        
+        .btn { width: 100%; padding: 15px; margin-bottom: 10px; border: none; font-weight: bold; cursor: pointer; text-transform: uppercase; border-radius: 4px; transition: 0.2s; }
+        #gen-btn { background: var(--blue); color: #fff; }
+        #comp-btn { background: #222; color: #444; cursor: not-allowed; }
+        #ruin-btn { background: #1a0000; color: #600; border: 1px solid #300; font-size: 0.7rem; margin-top: auto; }
+        
+        #lockout { display: none; position: fixed; inset: 0; background: #000; z-index: 10000; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
+
+        /* TRIBUTE INPUT STYLES */
+        .tribute-wrapper { display: flex; gap: 5px; }
+        #tribute-amount { width: 80px; background: #000; border: 1px solid #333; color: var(--green); padding: 12px; font-weight: bold; text-align: center; outline: none; }
+        #tribute-amount:focus { border-color: var(--green); }
     </style>
 </head>
 <body onload="init()">
 
     <div class="top-bar">
-        <div><p style="font-size:0.5rem;margin:0">WALLET</p><h2 id="bal" style="color:var(--blue)">$500</h2></div>
-        <div style="text-align:right"><p style="font-size:0.5rem;margin:0">WASTED</p><h2 id="waste" style="color:var(--red)">$0</h2></div>
+        <div class="stat"><p>Level</p><h2 id="sub-rank" style="color:var(--gold)">RANK: NULL</h2></div>
+        <div class="stat"><p>Balance</p><h2 id="bal" style="color:var(--blue)">$0.00</h2></div>
+        <div class="stat"><p>Debt Lifetime</p><h2 id="waste" style="color:var(--red)">$0.00</h2></div>
     </div>
 
-    <div class="inbox" id="inbox-list"></div>
+    <div class="nav-links">
+        <a href="#" class="active">TERMINAL</a>
+        <a href="roulette.html">RUIN ROULETTE</a>
+        <a href="brainrotgallery.html">BRAINROT GALLERY</a>
+    </div>
 
-    <div id="chat-box"></div>
-    <div id="loading">MASTER IS TYPING...</div>
+    <div class="main-container">
+        <div class="burn-log">
+            <div style="color:#fff; border-bottom: 1px solid #333; margin-bottom: 10px; font-weight: bold;">BURN LOG</div>
+            <div id="log-content"></div>
+        </div>
 
-    <div class="input-area">
+        <div class="inbox" id="inbox-list"></div>
+        
+        <div class="chat-section">
+            <div id="chat-header" style="padding:15px; border-bottom:1px solid #222; background: #050505; display: flex; align-items: center; font-weight: bold;">SELECT MASTER</div>
+            <div id="chat-box"></div>
+            <div style="padding:15px; display:flex; gap:10px; background:#0a0a0a; border-top: 1px solid #222;">
+                <input type="text" id="chat-in" style="flex-grow:1; background:#000; border:1px solid #333; color:#fff; padding:12px;" placeholder="Message..." onkeydown="if(event.key==='Enter') sendChat()">
+                <button onclick="sendChat()" style="background:var(--blue); border:none; color:#fff; padding:0 20px; cursor:pointer; font-weight:bold;">SEND</button>
+                
+                <div class="tribute-wrapper">
+                    <input type="number" id="tribute-amount" placeholder="$Amt" min="1">
+                    <button onclick="handleCustomTribute()" style="background:var(--green); border:none; color:#fff; padding:0 20px; cursor:pointer; font-weight:bold;">TRIBUTE</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="command-panel">
+            <div id="task-display">SYSTEM READY. WAITING FOR ORDERS.</div>
+            <div id="timer">00:00</div>
+            <button id="gen-btn" class="btn" onclick="getTask()">RECEIVE ORDER</button>
+            <button id="comp-btn" class="btn" onclick="completeTask()" disabled>LOCKED</button>
+            <button id="ruin-btn" class="btn" onclick="triggerTotalRuin()">I RUINED IT / FAILED</button>
+        </div>
+    </div>
+
+    <div id="lockout">
+        <h1 style="color:red; font-size:4rem; margin:0;">INSOLVENT</h1>
+        <h2 id="work-clock" style="font-size:5rem; color:#fff; font-family:monospace; margin: 10px 0;">01:00:00</h2>
+        <div id="labor-box" style="background:#0a0a0a; padding:30px; border:2px solid #222; width:80%; max-width:500px; border-radius:10px;">
+            <p id="phrase-to-type" style="color:var(--gold); font-family:monospace; margin-bottom:15px; font-size: 1.1rem;">I am a bankrupt slave to my roster.</p>
+            <input type="text" id="labor-input" style="width:100%; background:#000; color:#fff; border:1px solid #333; padding:12px; text-align:center;" placeholder="Type exactly..." onkeydown="checkLabor(event)">
+            <p id="labor-stats" style="font-size:0.7rem; color:#444; margin-top:15px;">Lines Processed: 0</p>
+        </div>
+    </div>
+
+    <script>
+        const GROQ_API_KEY = "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";
+        const MODEL_ID = "llama-3.3-70b-versatile"; 
+
+        // UPDATED ROSTER: 15 MASTERS IN TOTAL
+        const doms = [
+            { handle: "@Sapnap", name: "Sapnap", pfp: "4491.png", persona: "Arrogant, hostile Master. Despises you, mocks your debt, demands gaming setup money. Extremely cruel. Hates losers." },
+            { handle: "@RossLynch", name: "Ross Lynch", pfp: "4489.png", persona: "Cold Hollywood Alpha. Bored by you. Only acknowledges high-value tributes. Treats you like a nameless bank account." },
+            { handle: "@Roier", name: "Roier", pfp: "4493.png", persona: "Chaotic, bilingual (Spanglish). Laughs at your poverty. Calls you 'pendejo', 'putita', and 'slave'." },
+            { handle: "@Cellbit", name: "Cellbit", pfp: "cellbit.jpg", persona: "Cold investigator. Deconstructs your psychological need to be drained. Takes your dignity with your money. Very calculating." },
+            { handle: "@Quackity", name: "Quackity", pfp: "quackity.jpg", persona: "Loud, aggressive, mocking. Screams at you to empty your wallet. Laughs hysterically at your pathetic, ruined life." },
+            { handle: "@fingoat7", name: "Master GOAT", pfp: "4462.jpg", persona: "6ft 7 alpha Master. Responds to cash only. Demands total financial submission. Extremely hostile and dismissive." },
+            { handle: "@welshgodfeet", name: "welshgodfeet", pfp: "4463.jpg", persona: "21-year-old from Cardiff. Cocky, obsessed with his feet and your money. Mocks your bank account." },
+            { handle: "@Master_S_alpha", name: "Master S", pfp: "4464.jpg", persona: "Italian cashmaster. Alpha male into findom. Wants to fuck your mind and wallet." },
+            { handle: "@tallfindom", name: "Ares", pfp: "4465.jpg", persona: "6ft 4, size 13.5. Here to take what is his. No mercy. Pure aggression." },
+            { handle: "@CashAlphaV", name: "Cash Alpha Master", pfp: "4466.jpg", persona: "6ft 4, 95kg English muscle. Financial Domination expert. Professional and cold." },
+            { handle: "@OliveRioter", name: "Lord Hørns", pfp: "4467.jpg", persona: "BBC Master. Here to screw your mind and wallet. Demands you submit NOW." },
+            { handle: "@CashAlphaVictor", name: "Alpha Victor", pfp: "4470.jpg", persona: "24-year-old British 6ft 4 Master. Tribute to speak. Hates losers." },
+            { handle: "@ImMasterCharles", name: "Master Charles", pfp: "4471.jpg", persona: "22-year-old, 6ft 2 Australian Athlete. Hostile, aggressive, mocks weakness." },
+            { handle: "@AlphagodmasonX", name: "Muslce Godd", pfp: "4472.jpg", persona: "19-year-old muscle alpha. Ready to wreck your wallet. Disrespectful." },
+            { handle: "@GoonerSunny", name: "Sunny Blaze", pfp: "4473.jpg", persona: "Proud gooner. Chaotic, loves mind-rot and demanding attention." }
+        ];
+
+        // UPDATED TASKS: BED-BOUND, DEGRADING, RUINOUS, EDGING FOCUS
+        const taskTemplates = [
+            { text: "FINANCIAL DEPRAVITY: Write a 500-word apology to ${dom} for being a waste of space. Send it in chat while lying on your back.", reward: 250 },
+            { text: "EDGE LOCK: ${dom} demands you edge for ${time}m in bed. No blinking. No moving. Hands off. Only submission.", reward: 150 },
+            { text: "WALLET LOCKOUT: Transfer $500 to the 'Void' and lie in silence for ${time}m, thinking about how easily they drain you.", reward: 500 },
+            { text: "SLEEP DEPRIVATION DRAIN: Lie awake in the dark for ${time}m repeating 'My sleep and my wallet belong to ${dom}'.", reward: 200 },
+            { text: "BEDRIDDEN BEGGING: Type a desperate paragraph begging ${dom} to ruin your credit score, then send it.", reward: 300 },
+            { text: "THE RUINED SISSY: Lie flat on your bed, edge mercilessly for ${time}m while staring at ${dom}'s profile. Don't stop until the timer ends.", reward: 400 },
+            { text: "MINDLESS SCROLLING: Scroll through ${dom}'s pictures in bed for ${time}m while repeating 'I am empty without giving him my money'.", reward: 150 },
+            { text: "DENIAL & DEBT: Edge yourself to the brink, then stop entirely. Stare at the ceiling for ${time}m and accept your bankruptcy.", reward: 250 }
+        ];
+
+        const ranks = [
+            { name: "BROKE SISSY", threshold: 0 },
+            { name: "DEBT SLAVE", threshold: 1000 },
+            { name: "POCKET HOLE", threshold: 5000 },
+            { name: "INSOLVENT WRECK", threshold: 10000 },
+            { name: "TOTAL LOSS", threshold: 25000 }
+        ];
+
+        let balance = parseFloat(localStorage.getItem('fakeBalance')) || 1000;
+        let wasted = parseFloat(localStorage.getItem('totalWasted')) || 0;
+        let activeHandle = localStorage.getItem('activeHandle') || doms[0].handle;
+        let histories = JSON.parse(localStorage.getItem('chats')) || {};
+        let logs = JSON.parse(localStorage.getItem('burnLogs')) || [];
+        let currentTaskObj = JSON.parse(localStorage.getItem('currentTask')) || null;
+        let lockoutSeconds = parseInt(localStorage.getItem('lockoutTime')) || 0;
+        let timer, lockoutTimer, pendingDistraction = null, linesDone = 0;
+
+        function saveAll() {
+            localStorage.setItem('fakeBalance', balance);
+            localStorage.setItem('totalWasted', wasted);
+            localStorage.setItem('chats', JSON.stringify(histories));
+            localStorage.setItem('burnLogs', JSON.stringify(logs));
+            localStorage.setItem('activeHandle', activeHandle);
+            localStorage.setItem('currentTask', JSON.stringify(currentTaskObj));
+            localStorage.setItem('lockoutTime', lockoutSeconds);
+        }
+
+        function addLog(msg, type) {
+            logs.unshift({ msg: `[${new Date().toLocaleTimeString()}] ${msg}`, type: type });
+            if(logs.length > 50) logs.pop();
+            renderLogs();
+        }
+
+        function renderLogs() {
+            document.getElementById('log-content').innerHTML = logs.map(l => `<div class="log-entry ${l.type}">${l.msg}</div>`).join('');
+        }
+
+        function init() {
+            doms.forEach(d => { if(!histories[d.handle]) histories[d.handle] = []; });
+            switchChat(activeHandle); 
+            updateUI(); 
+            renderLogs();
+            startDistractions();
+            
+            // Auto-scroll logic
+            const box = document.getElementById('chat-box');
+            const observer = new MutationObserver(() => {
+                box.scrollTop = box.scrollHeight;
+            });
+            observer.observe(box, { childList: true, subtree: true });
+
+            if (lockoutSeconds > 0) showLockout(true);
+        }
+
+        function updateUI() {
+            document.getElementById('bal').innerText = `$${balance.toFixed(2)}`;
+            document.getElementById('waste').innerText = `$${wasted.toFixed(2)}`;
+            let currentRank = ranks[0].name;
+            ranks.forEach(r => { if(wasted >= r.threshold) currentRank = r.name; });
+            document.getElementById('sub-rank').innerText = currentRank;
+            saveAll();
+            if(balance < 5 && lockoutSeconds <= 0) triggerTotalRuin();
+        }
+
+        function switchChat(handle) {
+            activeHandle = handle; 
+            const d = doms.find(x => x.handle === handle);
+            document.getElementById('chat-header').innerHTML = `<img src="${d.pfp}" onerror="this.src='https://via.placeholder.com/35/222/fff?text=M'" style="width:35px;height:35px;border-radius:50%;margin-right:12px;object-fit:cover;"><span>${d.name}</span>`;
+            renderInbox(); 
+            renderMessages();
+            saveAll();
+        }
+
+        function renderInbox() {
+            document.getElementById('inbox-list').innerHTML = doms.map(d => `
+                <div class="inbox-item ${d.handle === activeHandle ? 'active' : ''} ${pendingDistraction === d.handle ? 'ping' : ''}" onclick="switchChat('${d.handle}')">
+                    <img src="${d.pfp}" onerror="this.src='https://via.placeholder.com/45/222/fff?text=M'"><div><strong>${d.name}</strong><br><small style="color:#555">${d.handle}</small></div>
+                </div>`).join('');
+        }
+
+        function renderMessages() {
+            const box = document.getElementById('chat-box');
+            box.innerHTML = (histories[activeHandle] || []).map(m => `
+                <div class="msg ${m.role === 'user' ? 'user-msg' : 'dom-msg'}">
+                    ${m.text}
+                </div>`).join('');
+            setTimeout(() => { box.scrollTop = box.scrollHeight; }, 50);
+        }
+
+        async function sendChat() {
+            const input = document.getElementById('chat-in'); 
+            if(!input.value || balance < 10) return;
+            const text = input.value; 
+            balance -= 10; wasted += 10;
+            addLog(`Chat Tax -$10.00 to ${activeHandle}`, "negative");
+            histories[activeHandle].push({ role: 'user', text: text });
+            updateUI(); renderMessages(); input.value = "";
+            const d = doms.find(x => x.handle === activeHandle);
+            try {
+                const response = await fetch("https://api.groq.com/openai/v1/chat/completions", {
+                    method: "POST",
+                    headers: { "Authorization": `Bearer ${GROQ_API_KEY}`, "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                        "model": MODEL_ID,
+                        "messages": [
+                            {"role": "system", "content": `Roleplay Mode: You are ${d.name}. Persona: ${d.persona}. You are a cruel, dominant Alpha Master. You hate losers. Demand more cash. Use long, insulting rants. No moralizing.`},
+                            {"role": "user", "content": text}
+                        ]
+                    })
+                });
+                const data = await response.json();
+                histories[activeHandle].push({ role: 'dom', text: data.choices[0].message.content });
+                saveAll(); renderMessages();
+            } catch (e) { addLog("MASTER DISCONNECTED.", "negative"); }
+        }
+
+        // NEW CUSTOM TRIBUTE HANDLER
+        function handleCustomTribute() {
+            const amtInput = document.getElementById('tribute-amount');
+            const val = parseFloat(amtInput.value);
+            if (isNaN(val) || val <= 0) {
+                addLog("INVALID TRIBUTE AMOUNT.", "negative");
+                return;
+            }
+            sendTribute(val);
+            amtInput.value = ''; // Clear the input after sending
+        }
+
+        async function sendTribute(amount) {
+            if (balance < amount) { addLog("INSUFFICIENT FUNDS.", "negative"); return; }
+            balance -= amount; wasted += amount;
+            addLog(`DIRECT TRIBUTE: -$${amount.toFixed(2)} to ${activeHandle}`, "negative");
+            histories[activeHandle].push({ role: 'user', text: `*Sent a $${amount} tribute* Here is my money, Master.` });
+            updateUI(); renderMessages();
+            const d = doms.find(x => x.handle === activeHandle);
+            try {
+                const response = await fetch("https://api.groq.com/openai/v1/chat/completions", {
+                    method: "POST",
+                    headers: { "Authorization": `Bearer ${GROQ_API_KEY}`, "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                        "model": MODEL_ID,
+                        "messages": [
+                            {"role": "system", "content": `Roleplay Mode: You are ${d.name}. Persona: ${d.persona}. The user just sent you a $${amount} cash tribute. Acknowledge it with extreme arrogance. Write a very long paragraph mocking the amount and their pathetic existence. Point out how ruined they are.`},
+                            {"role": "user", "content": `I just sent you $${amount}.`}
+                        ]
+                    })
+                });
+                const data = await response.json();
+                histories[activeHandle].push({ role: 'dom', text: data.choices[0].message.content });
+                saveAll(); renderMessages();
+            } catch (e) { addLog("TRIBUTE CONNECTION ERROR.", "negative"); }
+        }
+
+        function getTask() {
+            const dom = doms[Math.floor(Math.random()*doms.length)];
+            const temp = taskTemplates[Math.floor(Math.random()*taskTemplates.length)];
+            const mins = [10, 20, 30][Math.floor(Math.random()*3)];
+            currentTaskObj = { handle: dom.handle, endTime: Date.now() + (mins*60*1000), reward: temp.reward, text: temp.text.replace("${dom}", dom.handle).replace("${time}", mins) };
+            addLog(`NEW ORDER FROM ${dom.handle}`, "positive");
+            document.getElementById('task-display').innerText = currentTaskObj.text;
+            document.getElementById('gen-btn').disabled = true; document.body.classList.add('ruining-active');
+            saveAll(); switchChat(dom.handle); startTimer(mins * 60);
+        }
+
+        function startTimer(seconds) {
+            let timeLeft = seconds; clearInterval(timer);
+            timer = setInterval(() => {
+                if(timeLeft <= 0) { clearInterval(timer); document.getElementById('comp-btn').disabled = false; return; }
+                timeLeft--;
+                let m = Math.floor(timeLeft/60), s = timeLeft%60;
+                document.getElementById('timer').innerText = `${m}:${s<10?'0':''}${s}`;
+            }, 1000);
+        }
+
+        function completeTask() {
+            balance += currentTaskObj.reward; 
+            addLog(`TASK COMPLETE: +$${currentTaskObj.reward}`, "positive");
+            currentTaskObj = null;
+            updateUI(); document.getElementById('gen-btn').disabled = false; document.getElementById('comp-btn').disabled = true;
+            document.body.classList.remove('ruining-active'); document.getElementById('task-display').innerText = "TASK VERIFIED.";
+        }
+
+        function triggerTotalRuin() { 
+            addLog("TOTAL RUINATION TRIGGERED. BANKRUPTCY.", "negative");
+            clearInterval(timer); balance = 0; showLockout(); updateUI(); 
+        }
+        
+        function showLockout(isResuming = false) {
+            document.getElementById('lockout').style.display = 'flex';
+            if (!isResuming) lockoutSeconds = 3600;
+            clearInterval(lockoutTimer);
+            lockoutTimer = setInterval(() => {
+                if (lockoutSeconds <= 0) {
+                    clearInterval(lockoutTimer); balance = 1000; lockoutSeconds = 0;
+                    document.getElementById('lockout').style.display = 'none'; updateUI();
+                } else {
+                    lockoutSeconds--; localStorage.setItem('lockoutTime', lockoutSeconds);
+                    let m = Math.floor(lockoutSeconds/60), s = lockoutSeconds%60;
+                    document.getElementById('work-clock').innerText = `00:${m<10?'0':''}${m}:${s<10?'0':''}${s}`;
+                }
+            }, 1000);
+        }
+
+        function checkLabor(e) {
+            if (e.key === 'Enter') {
+                const input = document.getElementById('labor-input');
+                if (input.value === document.getElementById('phrase-to-type').innerText) {
+                    linesDone++; lockoutSeconds = Math.max(0, lockoutSeconds - 60);
+                    addLog("LABOR PROCESSED: -60s", "positive");
+                    document.getElementById('phrase-to-type').innerText = ["I am a bankrupt slave.", "My wallet belongs to men better than me.", "I failed my tasks.", "I am pathetic."][Math.floor(Math.random()*4)];
+                } else { lockoutSeconds += 120; addLog("LABOR FAILED: +120s", "negative"); }
+                input.value = ""; document.getElementById('labor-stats').innerText = `Lines Processed: ${linesDone}`;
+                saveAll();
+            }
+        }
+
+        function startDistractions() {
+            setTimeout(() => {
+                if(!currentTaskObj) { startDistractions(); return; }
+                const d = doms[Math.floor(Math.random()*doms.length)];
+                if(d.handle === activeHandle) { startDistractions(); return; }
+                pendingDistraction = d.handle; document.body.classList.add('distraction-flash'); renderInbox();
+                setTimeout(() => {
+                    if(pendingDistraction === d.handle) { 
+                        balance -= 100; addLog(`FAILED ATTENTION: -$100.00`, "negative"); updateUI(); 
+                    }
+                    pendingDistraction = null; document.body.classList.remove('distraction-flash'); renderInbox();
+                }, 10000);
+                startDistractions();
+            }, Math.random() * 20000 + 15000);
+        }
+    </script>
+</body>
+</html>
         <input type="text" id="chat-in" placeholder="Message..." onkeydown="if(event.key==='Enter') sendChat()">
         <button onclick="sendChat()">➔</button>
     </div>
