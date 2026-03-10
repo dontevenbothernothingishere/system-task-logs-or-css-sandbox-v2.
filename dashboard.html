@@ -113,132 +113,124 @@
     </div>
 
     <script>
-        const GROQ_API_KEY = "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";
-        const MODEL_ID = "llama-3.3-70b-versatile"; 
-        const ghBase = "https://cdn.jsdelivr.net/gh/dontevenbothernothingishere/system-task-logs-or-css-sandbox-v2@main/";
+const GROQ_API_KEY = "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";
+const MODEL_ID = "llama-3.3-70b-versatile"; 
+const ghBase = "https://cdn.jsdelivr.net/gh/dontevenbothernothingishere/system-task-logs-or-css-sandbox-v2@main/";
 
-        const doms = [
-            { handle: "@Sapnap", name: "Sapnap", pfp: ghBase + "4491.png", persona: "Arrogant, hostile Master. Despises you, mocks your debt. Demands tributes. Stay in character as a cruel Master." },
-            { handle: "@RossLynch", name: "Ross Lynch", pfp: ghBase + "4489.png", persona: "Cold Hollywood Alpha. Bored by you. Only acknowledges high-value tributes." },
-            { handle: "@Roier", name: "Roier", pfp: ghBase + "4493.png", persona: "Chaotic, bilingual (Spanglish). Laughs at your poverty. Calls you 'pendejo' and 'slave'." },
-            { handle: "@Cellbit", name: "Cellbit", pfp: ghBase + "cellbit.jpg", persona: "Cold investigator. Deconstructs your psychological need to be drained." },
-            { handle: "@Quackity", name: "Quackity", pfp: ghBase + "quackity.jpg", persona: "Loud, aggressive, mocking. Screams at you to empty your wallet." },
-            { handle: "@fingoat7", name: "Master GOAT", pfp: ghBase + "4462.jpg", persona: "6ft 7 alpha Master. Responds to cash only. Demands total financial submission." },
-            { handle: "@welshgodfeet", name: "welshgodfeet", pfp: ghBase + "4463.jpg", persona: "21-year-old from Cardiff. Cocky, obsessed with his feet and your money." },
-            { handle: "@Master_S_alpha", name: "Master S", pfp: ghBase + "4464.jpg", persona: "Italian cashmaster. Alpha male into findom. Wants to fuck your mind and wallet." },
-            { handle: "@tallfindom", name: "Ares", pfp: ghBase + "4465.jpg", persona: "6ft 4, size 13.5. Here to take what is his. No mercy." },
-            { handle: "@CashAlphaV", name: "Cash Alpha Master", pfp: ghBase + "4466.jpg", persona: "6ft 4, 95kg English muscle. Financial Domination expert." },
-            { handle: "@OliveRioter", name: "Lord Hørns", pfp: ghBase + "4467.jpg", persona: "BBC Master. Here to screw your mind and wallet. Demands you submit NOW." },
-            { handle: "@CashAlphaVictor", name: "Alpha Victor", pfp: ghBase + "4470.jpg", persona: "24-year-old British 6ft 4 Master. Tribute to speak." },
-            { handle: "@ImMasterCharles", name: "Master Charles", pfp: ghBase + "4471.jpg", persona: "22-year-old, 6ft 2 Australian Athlete. Hostile, aggressive." },
-            { handle: "@AlphagodmasonX", name: "Muslce Godd", pfp: ghBase + "4472.jpg", persona: "19-year-old muscle alpha. Ready to wreck your wallet." },
-            { handle: "@GoonerSunny", name: "Sunny Blaze", pfp: ghBase + "4473.jpg", persona: "Proud gooner. Chaotic, loves mind-rot and demanding attention." }
-        ];
+const doms = [
+    { handle: "@Sapnap", name: "Sapnap", pfp: ghBase + "4491.png", persona: "Arrogant, hostile Master. Despises you, mocks your debt. Demands tributes. Stay in character as a cruel Master." },
+    { handle: "@RossLynch", name: "Ross Lynch", pfp: ghBase + "4489.png", persona: "Cold Hollywood Alpha. Bored by you. Only acknowledges high-value tributes." },
+    { handle: "@Roier", name: "Roier", pfp: ghBase + "4493.png", persona: "Chaotic, bilingual (Spanglish). Laughs at your poverty. Calls you 'pendejo' and 'slave'." },
+    { handle: "@Cellbit", name: "Cellbit", pfp: ghBase + "cellbit.jpg", persona: "Cold investigator. Deconstructs your psychological need to be drained." },
+    { handle: "@Quackity", name: "Quackity", pfp: ghBase + "quackity.jpg", persona: "Loud, aggressive, mocking. Screams at you to empty your wallet." },
+    { handle: "@fingoat7", name: "Master GOAT", pfp: ghBase + "4462.jpg", persona: "6ft 7 alpha Master. Responds to cash only. Demands total financial submission." },
+    { handle: "@welshgodfeet", name: "welshgodfeet", pfp: ghBase + "4463.jpg", persona: "21-year-old from Cardiff. Cocky, obsessed with his feet and your money." },
+    { handle: "@Master_S_alpha", name: "Master S", pfp: ghBase + "4464.jpg", persona: "Italian cashmaster. Alpha male into findom. Wants to fuck your mind and wallet." },
+    { handle: "@tallfindom", name: "Ares", pfp: ghBase + "4465.jpg", persona: "6ft 4, size 13.5. Here to take what is his. No mercy." },
+    { handle: "@CashAlphaV", name: "Cash Alpha Master", pfp: ghBase + "4466.jpg", persona: "6ft 4, 95kg English muscle. Financial Domination expert." },
+    { handle: "@OliveRioter", name: "Lord Hørns", pfp: ghBase + "4467.jpg", persona: "BBC Master. Here to screw your mind and wallet. Demands you submit NOW." },
+    { handle: "@CashAlphaVictor", name: "Alpha Victor", pfp: ghBase + "4470.jpg", persona: "24-year-old British 6ft 4 Master. Tribute to speak." },
+    { handle: "@ImMasterCharles", name: "Master Charles", pfp: ghBase + "4471.jpg", persona: "22-year-old, 6ft 2 Australian Athlete. Hostile, aggressive." },
+    { handle: "@AlphagodmasonX", name: "Muslce Godd", pfp: ghBase + "4472.jpg", persona: "19-year-old muscle alpha. Ready to wreck your wallet." },
+    { handle: "@GoonerSunny", name: "Sunny Blaze", pfp: ghBase + "4473.jpg", persona: "Proud gooner. Chaotic, loves mind-rot and demanding attention." }
+];
 
-       const taskTemplates = [
-    // --- HIGH-INTENSITY JERK OFF / EDGING ---
+const taskTemplates = [
     { text: "THE 99% THRESHOLD: Jerk off to the absolute brink of explosion. Stop and freeze for 30s. Repeat for ${time}m. If you leak, tribute $50.", reward: 1200 },
     { text: "THE 'SISSY' STROKE: Use only your non-dominant hand and two fingers to tease the head of your cock. No full grips for ${time}m. Stay desperate.", reward: 800 },
     { text: "SPEED-EDGE GAUNTLET: Stroke as fast as possible for 20s, then hands off for 10s. Do this for ${time}m. Your brain must turn to mush.", reward: 1000 },
     { text: "THE BALL-ANCHOR EDGE: Edge yourself while using your other hand to keep a constant, painful downward pull on your balls. Duration: ${time}m.", reward: 1500 },
     { text: "DRY RUIN: Jerk off with NO LUBE for ${time}m. If you reach for oil, you must tribute ${dom} $100 immediately.", reward: 900 },
-
-    // --- CHAT & SOCIAL DEGRADATION ---
     { text: "DEBTOR'S CONFESSION: Message ${dom} a 200-word essay on why you are a pathetic, broke loser who exists only to fund his lifestyle. Spend ${time}m writing.", reward: 700 },
     { text: "THE ROSTER BEG: Message 3 different Masters in your inbox. Tell them: 'I am a bankrupt sissy. Please drain me.' Spend ${time}m doing this.", reward: 850 },
     { text: "REPETITIVE SUBMISSION: Type 'I AM NOTHING BUT A WALLET FOR THE ROSTER' 50 times in the chat. No typos allowed or you restart. Duration: ${time}m.", reward: 600 },
     { text: "THE APOLOGY TOUR: Message ${dom} and apologize for every dollar you 'wasted' on yourself this month instead of him. Spend ${time}m on this.", reward: 750 },
-
-    // --- FINANCIAL DRAIN ---
     { text: "THE ATM PROTOCOL: For ${time}m, every 60 seconds you must click the 'Tribute' button ($10). You are a machine. Machines don't have savings.", reward: 2000 },
     { text: "WALLET WORSHIP: Place your credit card on your balls. Stare at it for ${time}m while edging. Realize that card is your leash and ${dom} holds it.", reward: 1100 },
     { text: "THE BANKRUPTCY FORECAST: Open your bank app. Send ${dom} a screenshot (or description) of your balance and explain why he deserves it more. ${time}m.", reward: 1300 },
-
-    // --- BRAINROT & MENTAL ERASE ---
     { text: "THE GOONER STARE: Open the Brainrot Gallery. Scroll at max speed while stroking for ${time}m. You are not allowed to look away from the screen.", reward: 500 },
     { text: "NAME ERASE: For ${time}m, forget your real name. In every chat message, refer to yourself only as 'Debt-Pig' or 'Insolvent Slave'.", reward: 400 },
     { text: "ALPHA COMPARISON: List 10 physical reasons why ${dom} is a superior Alpha male while you edge. Acknowledge your place at his feet. ${time}m.", reward: 900 }
 ];
-        ];
 
-        const ranks = [
-            { name: "BROKE SISSY", threshold: 0 },
-            { name: "DEBT SLAVE", threshold: 1000 },
-            { name: "POCKET HOLE", threshold: 5000 },
-            { name: "INSOLVENT WRECK", threshold: 10000 },
-            { name: "TOTAL LOSS", threshold: 25000 }
-        ];
+const ranks = [
+    { name: "BROKE SISSY", threshold: 0 },
+    { name: "DEBT SLAVE", threshold: 1000 },
+    { name: "POCKET HOLE", threshold: 5000 },
+    { name: "INSOLVENT WRECK", threshold: 10000 },
+    { name: "TOTAL LOSS", threshold: 25000 }
+];
 
-        let balance, wasted, activeHandle, histories, logs, currentTaskObj, lockoutSeconds;
-        let timer, lockoutTimer, linesDone = 0;
+let balance, wasted, activeHandle, histories, logs, currentTaskObj, lockoutSeconds;
+let timer, lockoutTimer, linesDone = 0;
 
-        function init() {
-            balance = parseFloat(localStorage.getItem('fakeBalance')) || 1000;
-            wasted = parseFloat(localStorage.getItem('totalWasted')) || 0;
-            activeHandle = localStorage.getItem('activeHandle') || doms[0].handle;
-            histories = JSON.parse(localStorage.getItem('chats')) || {};
-            logs = JSON.parse(localStorage.getItem('burnLogs')) || [];
-            currentTaskObj = JSON.parse(localStorage.getItem('currentTask')) || null;
-            lockoutSeconds = parseInt(localStorage.getItem('lockoutTime')) || 0;
+function init() {
+    balance = parseFloat(localStorage.getItem('fakeBalance')) || 1000;
+    wasted = parseFloat(localStorage.getItem('totalWasted')) || 0;
+    activeHandle = localStorage.getItem('activeHandle') || doms[0].handle;
+    histories = JSON.parse(localStorage.getItem('chats')) || {};
+    logs = JSON.parse(localStorage.getItem('burnLogs')) || [];
+    currentTaskObj = JSON.parse(localStorage.getItem('currentTask')) || null;
+    lockoutSeconds = parseInt(localStorage.getItem('lockoutTime')) || 0;
 
-            doms.forEach(d => { if(!histories[d.handle]) histories[d.handle] = []; });
-            
-            switchChat(activeHandle); 
-            updateUI(); 
-            renderLogs();
-            
-            if (lockoutSeconds > 0) showLockout(true);
-            if (currentTaskObj) resumeTask();
-        }
+    doms.forEach(d => { if(!histories[d.handle]) histories[d.handle] = []; });
+    
+    switchChat(activeHandle); 
+    updateUI(); 
+    renderLogs();
+    
+    if (lockoutSeconds > 0) showLockout(true);
+    if (currentTaskObj) resumeTask();
+}
 
-        function saveAll() {
-            localStorage.setItem('fakeBalance', balance);
-            localStorage.setItem('totalWasted', wasted);
-            localStorage.setItem('chats', JSON.stringify(histories));
-            localStorage.setItem('burnLogs', JSON.stringify(logs));
-            localStorage.setItem('activeHandle', activeHandle);
-            localStorage.setItem('currentTask', JSON.stringify(currentTaskObj));
-            localStorage.setItem('lockoutTime', lockoutSeconds);
-        }
+function saveAll() {
+    localStorage.setItem('fakeBalance', balance);
+    localStorage.setItem('totalWasted', wasted);
+    localStorage.setItem('chats', JSON.stringify(histories));
+    localStorage.setItem('burnLogs', JSON.stringify(logs));
+    localStorage.setItem('activeHandle', activeHandle);
+    localStorage.setItem('currentTask', JSON.stringify(currentTaskObj));
+    localStorage.setItem('lockoutTime', lockoutSeconds);
+}
 
-        function updateUI() {
-            document.getElementById('bal').innerText = `$${balance.toFixed(2)}`;
-            document.getElementById('waste').innerText = `$${wasted.toFixed(2)}`;
-            let currentRank = ranks[0].name;
-            ranks.forEach(r => { if(wasted >= r.threshold) currentRank = r.name; });
-            document.getElementById('sub-rank').innerText = currentRank;
-            saveAll();
-        }
+function updateUI() {
+    document.getElementById('bal').innerText = `$${balance.toFixed(2)}`;
+    document.getElementById('waste').innerText = `$${wasted.toFixed(2)}`;
+    let currentRank = ranks[0].name;
+    ranks.forEach(r => { if(wasted >= r.threshold) currentRank = r.name; });
+    document.getElementById('sub-rank').innerText = currentRank;
+    saveAll();
+}
 
-        function switchChat(handle) {
-            activeHandle = handle; 
-            const d = doms.find(x => x.handle === handle);
-            document.getElementById('chat-header').innerHTML = `<img src="${d.pfp}" style="width:35px;height:35px;border-radius:50%;margin-right:12px;object-fit:cover;"><span>${d.name}</span>`;
-            renderInbox(); 
-            renderMessages();
-            saveAll();
-        }
+function switchChat(handle) {
+    activeHandle = handle; 
+    const d = doms.find(x => x.handle === handle);
+    document.getElementById('chat-header').innerHTML = `<img src="${d.pfp}" style="width:35px;height:35px;border-radius:50%;margin-right:12px;object-fit:cover;"><span>${d.name}</span>`;
+    renderInbox(); 
+    renderMessages();
+    saveAll();
+}
 
-        function renderInbox() {
-            document.getElementById('inbox-list').innerHTML = doms.map(d => `
-                <div class="inbox-item ${d.handle === activeHandle ? 'active' : ''}" onclick="switchChat('${d.handle}')">
-                    <img src="${d.pfp}"><div><strong>${d.name}</strong><br><small style="color:#555">${d.handle}</small></div>
-                </div>`).join('');
-        }
+function renderInbox() {
+    document.getElementById('inbox-list').innerHTML = doms.map(d => `
+        <div class="inbox-item ${d.handle === activeHandle ? 'active' : ''}" onclick="switchChat('${d.handle}')">
+            <img src="${d.pfp}"><div><strong>${d.name}</strong><br><small style="color:#555">${d.handle}</small></div>
+        </div>`).join('');
+}
 
-        function renderMessages() {
-            const box = document.getElementById('chat-box');
-            box.innerHTML = (histories[activeHandle] || []).map(m => `
-                <div class="msg ${m.role === 'user' ? 'user-msg' : 'dom-msg'}">${m.text}</div>`).join('');
-            box.scrollTop = box.scrollHeight;
-        }
+function renderMessages() {
+    const box = document.getElementById('chat-box');
+    box.innerHTML = (histories[activeHandle] || []).map(m => `
+        <div class="msg ${m.role === 'user' ? 'user-msg' : 'dom-msg'}">${m.text}</div>`).join('');
+    box.scrollTop = box.scrollHeight;
+}
 
-       async function sendChat() {
+async function sendChat() {
     const input = document.getElementById('chat-in'); 
     if(!input.value) return;
     
     let tax = 10;
-    if(balance < tax) return;
+    if(balance < tax) { alert("INSUFFICIENT BALANCE TO SEND MESSAGE."); return; }
     
     const text = input.value; 
     balance -= tax; wasted += tax;
@@ -246,12 +238,7 @@
     updateUI(); renderMessages(); input.value = "";
     
     const d = doms.find(x => x.handle === activeHandle);
-    
-    // --- NEW LOGIC: TELL THE AI WHAT IS HAPPENING ---
-    let contextAlert = "";
-    if (currentTaskObj) {
-        contextAlert = `\n[INTERNAL SYSTEM ALERT: The user is currently performing this task: "${currentTaskObj.text}". If they complain or speak, acknowledge the task and be harder on them. They have money on the line.]`;
-    }
+    let contextAlert = currentTaskObj ? `\n[ALERT: User is currently doing: ${currentTaskObj.text}]` : "";
 
     try {
         const response = await fetch("https://api.groq.com/openai/v1/chat/completions", {
@@ -260,7 +247,7 @@
             body: JSON.stringify({ 
                 "model": MODEL_ID, 
                 "messages": [
-                    {"role": "system", "content": d.persona + contextAlert}, // Context added here
+                    {"role": "system", "content": d.persona + contextAlert},
                     {"role": "user", "content": text}
                 ] 
             })
@@ -270,110 +257,137 @@
         saveAll(); renderMessages();
     } catch (e) { addLog("API ERROR", "negative"); }
 }
-        function handleCustomTribute() {
-            const val = parseFloat(document.getElementById('tribute-amount').value);
-            if (val > 0) { sendTribute(val); document.getElementById('tribute-amount').value = ''; }
-        }
 
-        async function sendTribute(amount) {
-            if (balance < amount) return;
-            balance -= amount; wasted += amount;
-            histories[activeHandle].push({ role: 'user', text: `*TRIBUTE: $${amount}*` });
-            updateUI(); renderMessages();
-            const d = doms.find(x => x.handle === activeHandle);
-            try {
-                const response = await fetch("https://api.groq.com/openai/v1/chat/completions", {
-                    method: "POST",
-                    headers: { "Authorization": `Bearer ${GROQ_API_KEY}`, "Content-Type": "application/json" },
-                    body: JSON.stringify({ "model": MODEL_ID, "messages": [{"role": "system", "content": d.persona}, {"role": "user", "content": "I sent $" + amount}] })
-                });
-                const data = await response.json();
-                histories[activeHandle].push({ role: 'dom', text: data.choices[0].message.content });
-                saveAll(); renderMessages();
-            } catch (e) {}
-        }
+function handleCustomTribute() {
+    const val = parseFloat(document.getElementById('tribute-amount').value);
+    if (val > 0) { sendTribute(val); document.getElementById('tribute-amount').value = ''; }
+}
 
-        function getTask() {
-            const d = doms[Math.floor(Math.random()*doms.length)];
-            const t = taskTemplates[Math.floor(Math.random()*taskTemplates.length)];
-            const mins = 10;
-            currentTaskObj = { handle: d.handle, endTime: Date.now() + (mins*60*1000), reward: t.reward, text: t.text.replace("${dom}", d.handle).replace("${time}", mins) };
-            document.getElementById('task-display').innerText = currentTaskObj.text;
-            document.getElementById('gen-btn').disabled = true;
-            document.body.classList.add('ruining-active');
-            startTimer(mins * 60);
-            saveAll();
-        }
+async function sendTribute(amount) {
+    if (balance < amount) return;
+    balance -= amount; wasted += amount;
+    histories[activeHandle].push({ role: 'user', text: `*TRIBUTE: $${amount}*` });
+    updateUI(); renderMessages();
+    const d = doms.find(x => x.handle === activeHandle);
+    try {
+        const response = await fetch("https://api.groq.com/openai/v1/chat/completions", {
+            method: "POST",
+            headers: { "Authorization": `Bearer ${GROQ_API_KEY}`, "Content-Type": "application/json" },
+            body: JSON.stringify({ "model": MODEL_ID, "messages": [{"role": "system", "content": d.persona}, {"role": "user", "content": "I just sent you a tribute of $" + amount}] })
+        });
+        const data = await response.json();
+        histories[activeHandle].push({ role: 'dom', text: data.choices[0].message.content });
+        saveAll(); renderMessages();
+    } catch (e) {}
+}
 
-        function resumeTask() {
-            const remain = Math.floor((currentTaskObj.endTime - Date.now()) / 1000);
-            if (remain > 0) {
-                document.getElementById('task-display').innerText = currentTaskObj.text;
-                document.getElementById('gen-btn').disabled = true;
-                startTimer(remain);
-            } else {
-                document.getElementById('comp-btn').disabled = false;
-            }
-        }
+function getTask() {
+    const d = doms[Math.floor(Math.random()*doms.length)];
+    const t = taskTemplates[Math.floor(Math.random()*taskTemplates.length)];
+    const mins = 10;
+    currentTaskObj = { handle: d.handle, endTime: Date.now() + (mins*60*1000), reward: t.reward, text: t.text.replace("${dom}", d.handle).replace("${time}", mins) };
+    
+    document.getElementById('task-display').innerText = currentTaskObj.text;
+    document.getElementById('gen-btn').disabled = true;
+    document.body.classList.add('ruining-active');
+    
+    // Auto-post task to chat
+    histories[activeHandle].push({ role: 'dom', text: `NEW ORDER: ${currentTaskObj.text}` });
+    renderMessages();
+    
+    startTimer(mins * 60);
+    saveAll();
+}
 
-        function startTimer(sec) {
-            clearInterval(timer);
-            timer = setInterval(() => {
-                if(sec <= 0) { clearInterval(timer); document.getElementById('comp-btn').disabled = false; return; }
-                sec--; let m = Math.floor(sec/60), s = sec%60;
-                document.getElementById('timer').innerText = `${m}:${s<10?'0':''}${s}`;
-            }, 1000);
-        }
+function resumeTask() {
+    const remain = Math.floor((currentTaskObj.endTime - Date.now()) / 1000);
+    if (remain > 0) {
+        document.getElementById('task-display').innerText = currentTaskObj.text;
+        document.getElementById('gen-btn').disabled = true;
+        startTimer(remain);
+    } else {
+        document.getElementById('comp-btn').disabled = false;
+        document.getElementById('timer').innerText = "00:00";
+    }
+}
 
-        function completeTask() {
-            balance += currentTaskObj.reward;
-            addLog(`+$${currentTaskObj.reward} REWARD`, "positive");
-            currentTaskObj = null; updateUI();
-            document.getElementById('gen-btn').disabled = false;
-            document.getElementById('comp-btn').disabled = true;
-            document.body.classList.remove('ruining-active');
-            document.getElementById('task-display').innerText = "SYSTEM READY.";
-            saveAll();
+function startTimer(sec) {
+    clearInterval(timer);
+    timer = setInterval(() => {
+        if(sec <= 0) { 
+            clearInterval(timer); 
+            document.getElementById('comp-btn').disabled = false; 
+            document.getElementById('timer').innerText = "00:00";
+            return; 
         }
+        sec--; 
+        let m = Math.floor(sec/60), s = sec%60;
+        document.getElementById('timer').innerText = `${m}:${s<10?'0':''}${s}`;
+    }, 1000);
+}
 
-        function triggerTotalRuin() {
-            balance = 0; showLockout(); updateUI();
-        }
+function completeTask() {
+    balance += currentTaskObj.reward;
+    addLog(`+$${currentTaskObj.reward} REWARD`, "positive");
+    currentTaskObj = null; 
+    updateUI();
+    document.getElementById('gen-btn').disabled = false;
+    document.getElementById('comp-btn').disabled = true;
+    document.body.classList.remove('ruining-active');
+    document.getElementById('task-display').innerText = "SYSTEM READY.";
+    document.getElementById('timer').innerText = "00:00";
+    saveAll();
+}
 
-        function showLockout(resume = false) {
-            document.getElementById('lockout').style.display = 'flex';
-            if(!resume) lockoutSeconds = 3600;
-            clearInterval(lockoutTimer);
-            lockoutTimer = setInterval(() => {
-                lockoutSeconds--; saveAll();
-                if(lockoutSeconds <= 0) {
-                    clearInterval(lockoutTimer); document.getElementById('lockout').style.display = 'none';
-                    balance = 1000; updateUI();
-                }
-                let m = Math.floor(lockoutSeconds/60), s = lockoutSeconds%60;
-                document.getElementById('work-clock').innerText = `00:${m<10?'0':''}${m}:${s<10?'0':''}${s}`;
-            }, 1000);
-        }
+function triggerTotalRuin() {
+    balance = 0; 
+    currentTaskObj = null;
+    document.body.classList.remove('ruining-active');
+    showLockout(); 
+    updateUI();
+}
 
-        function checkLabor(e) {
-            if (e.key === 'Enter') {
-                const input = document.getElementById('labor-input');
-                if (input.value === document.getElementById('phrase-to-type').innerText) {
-                    linesDone++; lockoutSeconds = Math.max(0, lockoutSeconds - 60);
-                    document.getElementById('phrase-to-type').innerText = "I am a bankrupt slave.";
-                } else { lockoutSeconds += 120; }
-                input.value = ""; document.getElementById('labor-stats').innerText = `Lines: ${linesDone}`;
-            }
+function showLockout(resume = false) {
+    document.getElementById('lockout').style.display = 'flex';
+    if(!resume) lockoutSeconds = 3600;
+    clearInterval(lockoutTimer);
+    lockoutTimer = setInterval(() => {
+        lockoutSeconds--; 
+        saveAll();
+        if(lockoutSeconds <= 0) {
+            clearInterval(lockoutTimer); 
+            document.getElementById('lockout').style.display = 'none';
+            balance = 1000; 
+            updateUI();
         }
+        let m = Math.floor(lockoutSeconds/60), s = lockoutSeconds%60;
+        document.getElementById('work-clock').innerText = `00:${m<10?'0':''}${m}:${s<10?'0':''}${s}`;
+    }, 1000);
+}
 
-        function addLog(m, t) {
-            logs.unshift({ msg: `[${new Date().toLocaleTimeString()}] ${m}`, type: t });
-            renderLogs();
+function checkLabor(e) {
+    if (e.key === 'Enter') {
+        const input = document.getElementById('labor-input');
+        if (input.value === document.getElementById('phrase-to-type').innerText) {
+            linesDone++; 
+            lockoutSeconds = Math.max(0, lockoutSeconds - 60);
+            document.getElementById('phrase-to-type').innerText = "I am a bankrupt slave.";
+        } else { 
+            lockoutSeconds += 120; 
         }
+        input.value = ""; 
+        document.getElementById('labor-stats').innerText = `Lines: ${linesDone}`;
+    }
+}
 
-        function renderLogs() {
-            document.getElementById('log-content').innerHTML = logs.map(l => `<div class="log-entry ${l.type}">${l.msg}</div>`).join('');
-        }
+function addLog(m, t) {
+    logs.unshift({ msg: `[${new Date().toLocaleTimeString()}] ${m}`, type: t });
+    renderLogs();
+}
+
+function renderLogs() {
+    document.getElementById('log-content').innerHTML = logs.map(l => `<div class="log-entry ${l.type}">${l.msg}</div>`).join('');
+}
     </script>
 </body>
 </html>
