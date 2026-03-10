@@ -233,28 +233,43 @@
             box.scrollTop = box.scrollHeight;
         }
 
-        async function sendChat() {
-            const input = document.getElementById('chat-in'); 
-            if(!input.value) return;
-            let tax = 10;
-            if(balance < tax) return;
-            const text = input.value; 
-            balance -= tax; wasted += tax;
-            histories[activeHandle].push({ role: 'user', text: text });
-            updateUI(); renderMessages(); input.value = "";
-            const d = doms.find(x => x.handle === activeHandle);
-            try {
-                const response = await fetch("https://api.groq.com/openai/v1/chat/completions", {
-                    method: "POST",
-                    headers: { "Authorization": `Bearer ${GROQ_API_KEY}`, "Content-Type": "application/json" },
-                    body: JSON.stringify({ "model": MODEL_ID, "messages": [{"role": "system", "content": d.persona}, {"role": "user", "content": text}] })
-                });
-                const data = await response.json();
-                histories[activeHandle].push({ role: 'dom', text: data.choices[0].message.content });
-                saveAll(); renderMessages();
-            } catch (e) { addLog("API ERROR", "negative"); }
-        }
+       async function sendChat() {
+    const input = document.getElementById('chat-in'); 
+    if(!input.value) return;
+    
+    let tax = 10;
+    if(balance < tax) return;
+    
+    const text = input.value; 
+    balance -= tax; wasted += tax;
+    histories[activeHandle].push({ role: 'user', text: text });
+    updateUI(); renderMessages(); input.value = "";
+    
+    const d = doms.find(x => x.handle === activeHandle);
+    
+    // --- NEW LOGIC: TELL THE AI WHAT IS HAPPENING ---
+    let contextAlert = "";
+    if (currentTaskObj) {
+        contextAlert = `\n[INTERNAL SYSTEM ALERT: The user is currently performing this task: "${currentTaskObj.text}". If they complain or speak, acknowledge the task and be harder on them. They have money on the line.]`;
+    }
 
+    try {
+        const response = await fetch("https://api.groq.com/openai/v1/chat/completions", {
+            method: "POST",
+            headers: { "Authorization": `Bearer ${GROQ_API_KEY}`, "Content-Type": "application/json" },
+            body: JSON.stringify({ 
+                "model": MODEL_ID, 
+                "messages": [
+                    {"role": "system", "content": d.persona + contextAlert}, // Context added here
+                    {"role": "user", "content": text}
+                ] 
+            })
+        });
+        const data = await response.json();
+        histories[activeHandle].push({ role: 'dom', text: data.choices[0].message.content });
+        saveAll(); renderMessages();
+    } catch (e) { addLog("API ERROR", "negative"); }
+}
         function handleCustomTribute() {
             const val = parseFloat(document.getElementById('tribute-amount').value);
             if (val > 0) { sendTribute(val); document.getElementById('tribute-amount').value = ''; }
