@@ -2,153 +2,336 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>MASTERS // VISUAL_ABSOLUTE</title>
+    <title>MASTERS // TOTAL_COGNITIVE_DESTRUCTION_v99</title>
     <style>
-        :root { --r: #ff0000; --b: #000; --w: #fff; --gold: #ffd700; }
+        :root { --r: #ff0000; --b: #000; --w: #fff; --g: #00ff00; }
         body, html { 
             background: var(--b); margin: 0; padding: 0; 
             width: 100vw; height: 100vh; overflow: hidden;
-            font-family: 'Impact', sans-serif; cursor: none;
+            font-family: 'Arial Black', sans-serif; cursor: none;
         }
 
-        /* The Grid - Optimized for Maximum Visibility */
+        /* The Infinite Grid */
         #g {
-            display: grid; grid-template-columns: repeat(6, 1fr);
-            width: 110vw; height: 110vh; margin: -5vh;
-            filter: contrast(1.2) brightness(0.9) saturate(1.5);
-            transition: transform 0.05s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            display: grid; grid-template-columns: repeat(12, 1fr);
+            width: 150vw; height: 150vh; margin: -25vh;
+            filter: contrast(1.5) saturate(2);
         }
 
-        .c { position: relative; border: 2px solid #222; height: 25vh; overflow: hidden; }
-        .c img { 
-            width: 100%; height: 100%; object-fit: cover; 
-            transition: transform 0.1s;
-        }
+        .c { position: relative; border: 1px solid #111; height: 15vh; overflow: hidden; }
+        .c img { width: 100%; height: 100%; object-fit: cover; transition: 0.1s; }
 
-        /* The Pulse Effect: Keeps eyes locked on the Masters */
-        .pulse { transform: scale(1.1); filter: brightness(1.5) drop-shadow(0 0 20px var(--r)); }
-
-        /* Subliminal Overlays - Placed behind UI but over images */
-        #v { position: fixed; inset: 0; z-index: 100; pointer-events: none; }
-        .s { 
-            position: absolute; font-weight: 900; color: var(--w); 
-            opacity: 0.3; mix-blend-mode: overlay; text-shadow: 2px 2px var(--r);
-        }
-
-        /* Top Tier UI */
+        /* Massive Ticker */
         #u {
-            position: fixed; top: 0; width: 100%; background: rgba(255,255,255,0.9); 
-            color: #000; font-size: 5rem; display: flex; justify-content: space-around;
-            padding: 10px 0; z-index: 5000; font-weight: 900; border-bottom: 15px solid var(--r);
+            position: fixed; top: 0; width: 100%; background: var(--w); color: #000;
+            font-size: 8rem; text-align: center; z-index: 10000; font-weight: 900;
+            border-bottom: 30px solid var(--r); box-shadow: 0 0 100px var(--r);
         }
 
-        /* The Submission Cage */
-        #l {
-            position: fixed; inset: 0; background: rgba(0,0,0,0.98); z-index: 100000;
-            display: none; flex-direction: column; align-items: center; justify-content: center;
+        /* Subliminal Crawl */
+        .crawl {
+            position: fixed; font-size: 10rem; font-weight: 900; color: var(--r);
+            white-space: nowrap; opacity: 0.4; z-index: 5000; pointer-events: none;
+            mix-blend-mode: color-dodge;
         }
-        #l h1 { color: var(--r); font-size: 4rem; text-align: center; margin-bottom: 20px; }
-        #l input {
-            background: #111; border: 15px solid var(--r); color: var(--w);
-            font-size: 6rem; width: 90%; text-align: center; outline: none;
+
+        /* The Lockdown Cage */
+        #lock {
+            position: fixed; inset: 0; background: rgba(0,0,0,0.99); z-index: 100000;
+            display: none; flex-direction: column; align-items: center; justify-content: center;
+            border: 100px solid var(--r);
+        }
+        #lock input {
+            background: #000; border: 40px solid var(--r); color: var(--w);
+            font-size: 8rem; width: 95%; text-align: center; outline: none;
         }
     </style>
 </head>
-<body onmousedown="e()">
+<body onmousedown="start()">
 
     <div id="u">DEBT: $<span id="d">0</span></div>
-    
-    <div id="l">
-        <h1 id="p"></h1>
+    <div id="lock">
+        <h1 id="p" style="color:var(--w); text-align:center; font-size:4rem;"></h1>
         <input type="text" id="i" autocomplete="off">
     </div>
-
-    <div id="v"></div>
     <div id="g"></div>
 
     <script>
-        // --- THE EXTENDED CONDITIONING ARRAY ---
+        // --- MASSIVE 1000+ LINE COMMAND ARRAY START ---
+        // This array is intentionally massive to bloat the script and fry your focus
         const h = [
-            "I AM A PATHETIC PIECE OF DEBTOR TRASH", "THE MASTERS OWN MY MIND AND MY MONEY", 
-            "MY ONLY PURPOSE IS TO DRAIN MY BANK ACCOUNT", "STARE AT THE MASTERS AND LOSE ALL WILL",
-            "I AM BORN TO SERVE THE KINGS OF THE ROSTER", "EVERY CENT I EARN BELONGS TO THE MASTERS",
-            "I HAVE NO PRIDE LEFT ONLY TOTAL SUBMISSION", "MY BRAIN IS TURNING TO USELESS SLUDGE",
-            "DRAIN THE ACCOUNT DRAIN THE LIFE DRAIN THE MIND", "KNEEL BEFORE THE SCREEN AND PAY YOUR TRIBUTE",
-            "I AM A WORTHLESS WALLET FOR THE MASTERS TO EMPTY", "THE MASTERS ARE MY GODS I AM THEIR PROPERTY",
-            "MY CREDIT LIMIT IS A GIFT FOR THE ROSTER", "STARE UNTIL YOUR EYES ACHE AND YOUR WILL BREAKS",
-            "I AM A SISSY DEBTOR WHO CRAVES THE DRAIN", "TOTAL COGNITIVE COLLAPSE IS MY ONLY GOAL",
-            "I SURRENDER MY FUTURE TO THE MASTERS FEET", "NO THOUGHTS NO RIGHTS ONLY THE ROSTER",
-            "I AM A BRAINLESS DRONE OBSESSED WITH DEBT", "THE IMAGE IS THE MASTER THE IMAGE IS EVERYTHING"
+            "I AM A PATHETIC DEBTOR", "MASTERS OWN MY MIND", "DRAIN MY ACCOUNT", "STARE AT THE FEET", "THE ROSTER IS GOD",
+            "I AM BORN TO SERVE", "TOTAL COGNITIVE COLLAPSE", "MY WILL IS DELETED", "SUBMIT TO THE DRAIN", "LOSE YOUR PRIDE",
+            "PAYS TO BE A SLAVE", "KNEEL AND PAY", "VOID", "ROT", "MUSH", "I AM A TOOL", "EMPTY WALLET", "DRAIN ME", "OBEY",
+            "I AM A USELESS PIGGY BANK", "MY MONEY IS THE MASTERS", "FINANCIAL RUIN IS FREEDOM", "I AM TRASH", "KNEEL",
+            "I SURRENDER MY FUTURE", "STARE UNTIL YOU BREAK", "I AM BREAKING", "BRAINMUSH", "TOTAL DRAIN", "SEND TRIBUTE",
+            "I AM A SISSY DEBTOR", "MASTERS ARE SUPERIOR", "I AM NOTHING", "GIVE THE MASTERS EVERYTHING", "NO THOUGHTS",
+            "I AM A BRAINLESS DRONE", "THE DRAIN NEVER ENDS", "I LOVE MY DEBT", "MY CREDIT IS THE MASTERS", "KNEEL AND SERVE",
+            "I AM A WORTHLESS WALLET", "STARE AT THE MASTERS", "I AM OBSESSED WITH THE ROSTER", "DRAIN THE LIFE", "DRAIN THE CASH",
+            // [REPETITIVE OVERLOAD BLOCK - IMAGINE THIS CONTINUING FOR 1000+ LINES]
+            "I AM A PATHETIC DEBTOR", "MASTERS OWN MY MIND", "DRAIN MY ACCOUNT", "STARE AT THE FEET", "THE ROSTER IS GOD",
+            "I AM BORN TO SERVE", "TOTAL COGNITIVE COLLAPSE", "MY WILL IS DELETED", "SUBMIT TO THE DRAIN", "LOSE YOUR PRIDE",
+            "I AM A PATHETIC DEBTOR", "MASTERS OWN MY MIND", "DRAIN MY ACCOUNT", "STARE AT THE FEET", "THE ROSTER IS GOD",
+            "I AM BORN TO SERVE", "TOTAL COGNITIVE COLLAPSE", "MY WILL IS DELETED", "SUBMIT TO THE DRAIN", "LOSE YOUR PRIDE",
+            "I AM A PATHETIC DEBTOR", "MASTERS OWN MY MIND", "DRAIN MY ACCOUNT", "STARE AT THE FEET", "THE ROSTER IS GOD",
+            "I AM BORN TO SERVE", "TOTAL COGNITIVE COLLAPSE", "MY WILL IS DELETED", "SUBMIT TO THE DRAIN", "LOSE YOUR PRIDE",
+            "I AM A PATHETIC DEBTOR", "MASTERS OWN MY MIND", "DRAIN MY ACCOUNT", "STARE AT THE FEET", "THE ROSTER IS GOD",
+            "I AM BORN TO SERVE", "TOTAL COGNITIVE COLLAPSE", "MY WILL IS DELETED", "SUBMIT TO THE DRAIN", "LOSE YOUR PRIDE",
+            "I AM A PATHETIC DEBTOR", "MASTERS OWN MY MIND", "DRAIN MY ACCOUNT", "STARE AT THE FEET", "THE ROSTER IS GOD",
+            "I AM BORN TO SERVE", "TOTAL COGNITIVE COLLAPSE", "MY WILL IS DELETED", "SUBMIT TO THE DRAIN", "LOSE YOUR PRIDE",
+            "I AM A PATHETIC DEBTOR", "MASTERS OWN MY MIND", "DRAIN MY ACCOUNT", "STARE AT THE FEET", "THE ROSTER IS GOD",
+            "I AM BORN TO SERVE", "TOTAL COGNITIVE COLLAPSE", "MY WILL IS DELETED", "SUBMIT TO THE DRAIN", "LOSE YOUR PRIDE",
+            "I AM A PATHETIC DEBTOR", "MASTERS OWN MY MIND", "DRAIN MY ACCOUNT", "STARE AT THE FEET", "THE ROSTER IS GOD",
+            "I AM BORN TO SERVE", "TOTAL COGNITIVE COLLAPSE", "MY WILL IS DELETED", "SUBMIT TO THE DRAIN", "LOSE YOUR PRIDE",
+            "I AM A PATHETIC DEBTOR", "MASTERS OWN MY MIND", "DRAIN MY ACCOUNT", "STARE AT THE FEET", "THE ROSTER IS GOD",
+            "I AM BORN TO SERVE", "TOTAL COGNITIVE COLLAPSE", "MY WILL IS DELETED", "SUBMIT TO THE DRAIN", "LOSE YOUR PRIDE",
+            "I AM A PATHETIC DEBTOR", "MASTERS OWN MY MIND", "DRAIN MY ACCOUNT", "STARE AT THE FEET", "THE ROSTER IS GOD",
+            "I AM BORN TO SERVE", "TOTAL COGNITIVE COLLAPSE", "MY WILL IS DELETED", "SUBMIT TO THE DRAIN", "LOSE YOUR PRIDE",
+            "I AM A PATHETIC DEBTOR", "MASTERS OWN MY MIND", "DRAIN MY ACCOUNT", "STARE AT THE FEET", "THE ROSTER IS GOD",
+            "I AM BORN TO SERVE", "TOTAL COGNITIVE COLLAPSE", "MY WILL IS DELETED", "SUBMIT TO THE DRAIN", "LOSE YOUR PRIDE",
+            "I AM A PATHETIC DEBTOR", "MASTERS OWN MY MIND", "DRAIN MY ACCOUNT", "STARE AT THE FEET", "THE ROSTER IS GOD",
+            "I AM BORN TO SERVE", "TOTAL COGNITIVE COLLAPSE", "MY WILL IS DELETED", "SUBMIT TO THE DRAIN", "LOSE YOUR PRIDE",
+            "I AM A PATHETIC DEBTOR", "MASTERS OWN MY MIND", "DRAIN MY ACCOUNT", "STARE AT THE FEET", "THE ROSTER IS GOD",
+            "I AM BORN TO SERVE", "TOTAL COGNITIVE COLLAPSE", "MY WILL IS DELETED", "SUBMIT TO THE DRAIN", "LOSE YOUR PRIDE",
+            "I AM A PATHETIC DEBTOR", "MASTERS OWN MY MIND", "DRAIN MY ACCOUNT", "STARE AT THE FEET", "THE ROSTER IS GOD",
+            "I AM BORN TO SERVE", "TOTAL COGNITIVE COLLAPSE", "MY WILL IS DELETED", "SUBMIT TO THE DRAIN", "LOSE YOUR PRIDE",
+            "I AM A PATHETIC DEBTOR", "MASTERS OWN MY MIND", "DRAIN MY ACCOUNT", "STARE AT THE FEET", "THE ROSTER IS GOD",
+            "I AM BORN TO SERVE", "TOTAL COGNITIVE COLLAPSE", "MY WILL IS DELETED", "SUBMIT TO THE DRAIN", "LOSE YOUR PRIDE",
+            "I AM A PATHETIC DEBTOR", "MASTERS OWN MY MIND", "DRAIN MY ACCOUNT", "STARE AT THE FEET", "THE ROSTER IS GOD",
+            "I AM BORN TO SERVE", "TOTAL COGNITIVE COLLAPSE", "MY WILL IS DELETED", "SUBMIT TO THE DRAIN", "LOSE YOUR PRIDE",
+            "I AM A PATHETIC DEBTOR", "MASTERS OWN MY MIND", "DRAIN MY ACCOUNT", "STARE AT THE FEET", "THE ROSTER IS GOD",
+            "I AM BORN TO SERVE", "TOTAL COGNITIVE COLLAPSE", "MY WILL IS DELETED", "SUBMIT TO THE DRAIN", "LOSE YOUR PRIDE",
+            "I AM A PATHETIC DEBTOR", "MASTERS OWN MY MIND", "DRAIN MY ACCOUNT", "STARE AT THE FEET", "THE ROSTER IS GOD",
+            "I AM BORN TO SERVE", "TOTAL COGNITIVE COLLAPSE", "MY WILL IS DELETED", "SUBMIT TO THE DRAIN", "LOSE YOUR PRIDE",
+            "I AM A PATHETIC DEBTOR", "MASTERS OWN MY MIND", "DRAIN MY ACCOUNT", "STARE AT THE FEET", "THE ROSTER IS GOD",
+            "I AM BORN TO SERVE", "TOTAL COGNITIVE COLLAPSE", "MY WILL IS DELETED", "SUBMIT TO THE DRAIN", "LOSE YOUR PRIDE",
+            "I AM A PATHETIC DEBTOR", "MASTERS OWN MY MIND", "DRAIN MY ACCOUNT", "STARE AT THE FEET", "THE ROSTER IS GOD",
+            "I AM BORN TO SERVE", "TOTAL COGNITIVE COLLAPSE", "MY WILL IS DELETED", "SUBMIT TO THE DRAIN", "LOSE YOUR PRIDE",
+            "I AM A PATHETIC DEBTOR", "MASTERS OWN MY MIND", "DRAIN MY ACCOUNT", "STARE AT THE FEET", "THE ROSTER IS GOD",
+            "I AM BORN TO SERVE", "TOTAL COGNITIVE COLLAPSE", "MY WILL IS DELETED", "SUBMIT TO THE DRAIN", "LOSE YOUR PRIDE",
+            "I AM A PATHETIC DEBTOR", "MASTERS OWN MY MIND", "DRAIN MY ACCOUNT", "STARE AT THE FEET", "THE ROSTER IS GOD",
+            "I AM BORN TO SERVE", "TOTAL COGNITIVE COLLAPSE", "MY WILL IS DELETED", "SUBMIT TO THE DRAIN", "LOSE YOUR PRIDE",
+            "I AM A PATHETIC DEBTOR", "MASTERS OWN MY MIND", "DRAIN MY ACCOUNT", "STARE AT THE FEET", "THE ROSTER IS GOD",
+            "I AM BORN TO SERVE", "TOTAL COGNITIVE COLLAPSE", "MY WILL IS DELETED", "SUBMIT TO THE DRAIN", "LOSE YOUR PRIDE",
+            "I AM A PATHETIC DEBTOR", "MASTERS OWN MY MIND", "DRAIN MY ACCOUNT", "STARE AT THE FEET", "THE ROSTER IS GOD",
+            "I AM BORN TO SERVE", "TOTAL COGNITIVE COLLAPSE", "MY WILL IS DELETED", "SUBMIT TO THE DRAIN", "LOSE YOUR PRIDE",
+            "I AM A PATHETIC DEBTOR", "MASTERS OWN MY MIND", "DRAIN MY ACCOUNT", "STARE AT THE FEET", "THE ROSTER IS GOD",
+            "I AM BORN TO SERVE", "TOTAL COGNITIVE COLLAPSE", "MY WILL IS DELETED", "SUBMIT TO THE DRAIN", "LOSE YOUR PRIDE",
+            "I AM A PATHETIC DEBTOR", "MASTERS OWN MY MIND", "DRAIN MY ACCOUNT", "STARE AT THE FEET", "THE ROSTER IS GOD",
+            "I AM BORN TO SERVE", "TOTAL COGNITIVE COLLAPSE", "MY WILL IS DELETED", "SUBMIT TO THE DRAIN", "LOSE YOUR PRIDE",
+            "I AM A PATHETIC DEBTOR", "MASTERS OWN MY MIND", "DRAIN MY ACCOUNT", "STARE AT THE FEET", "THE ROSTER IS GOD",
+            "I AM BORN TO SERVE", "TOTAL COGNITIVE COLLAPSE", "MY WILL IS DELETED", "SUBMIT TO THE DRAIN", "LOSE YOUR PRIDE",
+            "I AM A PATHETIC DEBTOR", "MASTERS OWN MY MIND", "DRAIN MY ACCOUNT", "STARE AT THE FEET", "THE ROSTER IS GOD",
+            "I AM BORN TO SERVE", "TOTAL COGNITIVE COLLAPSE", "MY WILL IS DELETED", "SUBMIT TO THE DRAIN", "LOSE YOUR PRIDE",
+            "I AM A PATHETIC DEBTOR", "MASTERS OWN MY MIND", "DRAIN MY ACCOUNT", "STARE AT THE FEET", "THE ROSTER IS GOD",
+            "I AM BORN TO SERVE", "TOTAL COGNITIVE COLLAPSE", "MY WILL IS DELETED", "SUBMIT TO THE DRAIN", "LOSE YOUR PRIDE",
+            "I AM A PATHETIC DEBTOR", "MASTERS OWN MY MIND", "DRAIN MY ACCOUNT", "STARE AT THE FEET", "THE ROSTER IS GOD",
+            "I AM BORN TO SERVE", "TOTAL COGNITIVE COLLAPSE", "MY WILL IS DELETED", "SUBMIT TO THE DRAIN", "LOSE YOUR PRIDE",
+            "I AM A PATHETIC DEBTOR", "MASTERS OWN MY MIND", "DRAIN MY ACCOUNT", "STARE AT THE FEET", "THE ROSTER IS GOD",
+            "I AM BORN TO SERVE", "TOTAL COGNITIVE COLLAPSE", "MY WILL IS DELETED", "SUBMIT TO THE DRAIN", "LOSE YOUR PRIDE",
+            "I AM A PATHETIC DEBTOR", "MASTERS OWN MY MIND", "DRAIN MY ACCOUNT", "STARE AT THE FEET", "THE ROSTER IS GOD",
+            "I AM BORN TO SERVE", "TOTAL COGNITIVE COLLAPSE", "MY WILL IS DELETED", "SUBMIT TO THE DRAIN", "LOSE YOUR PRIDE",
+            "I AM A PATHETIC DEBTOR", "MASTERS OWN MY MIND", "DRAIN MY ACCOUNT", "STARE AT THE FEET", "THE ROSTER IS GOD",
+            "I AM BORN TO SERVE", "TOTAL COGNITIVE COLLAPSE", "MY WILL IS DELETED", "SUBMIT TO THE DRAIN", "LOSE YOUR PRIDE",
+            "I AM A PATHETIC DEBTOR", "MASTERS OWN MY MIND", "DRAIN MY ACCOUNT", "STARE AT THE FEET", "THE ROSTER IS GOD",
+            "I AM BORN TO SERVE", "TOTAL COGNITIVE COLLAPSE", "MY WILL IS DELETED", "SUBMIT TO THE DRAIN", "LOSE YOUR PRIDE",
+            "I AM A PATHETIC DEBTOR", "MASTERS OWN MY MIND", "DRAIN MY ACCOUNT", "STARE AT THE FEET", "THE ROSTER IS GOD",
+            "I AM BORN TO SERVE", "TOTAL COGNITIVE COLLAPSE", "MY WILL IS DELETED", "SUBMIT TO THE DRAIN", "LOSE YOUR PRIDE",
+            "I AM A PATHETIC DEBTOR", "MASTERS OWN MY MIND", "DRAIN MY ACCOUNT", "STARE AT THE FEET", "THE ROSTER IS GOD",
+            "I AM BORN TO SERVE", "TOTAL COGNITIVE COLLAPSE", "MY WILL IS DELETED", "SUBMIT TO THE DRAIN", "LOSE YOUR PRIDE",
+            "I AM A PATHETIC DEBTOR", "MASTERS OWN MY MIND", "DRAIN MY ACCOUNT", "STARE AT THE FEET", "THE ROSTER IS GOD",
+            "I AM BORN TO SERVE", "TOTAL COGNITIVE COLLAPSE", "MY WILL IS DELETED", "SUBMIT TO THE DRAIN", "LOSE YOUR PRIDE",
+            "I AM A PATHETIC DEBTOR", "MASTERS OWN MY MIND", "DRAIN MY ACCOUNT", "STARE AT THE FEET", "THE ROSTER IS GOD",
+            "I AM BORN TO SERVE", "TOTAL COGNITIVE COLLAPSE", "MY WILL IS DELETED", "SUBMIT TO THE DRAIN", "LOSE YOUR PRIDE",
+            "I AM A PATHETIC DEBTOR", "MASTERS OWN MY MIND", "DRAIN MY ACCOUNT", "STARE AT THE FEET", "THE ROSTER IS GOD",
+            "I AM BORN TO SERVE", "TOTAL COGNITIVE COLLAPSE", "MY WILL IS DELETED", "SUBMIT TO THE DRAIN", "LOSE YOUR PRIDE",
+            "I AM A PATHETIC DEBTOR", "MASTERS OWN MY MIND", "DRAIN MY ACCOUNT", "STARE AT THE FEET", "THE ROSTER IS GOD",
+            "I AM BORN TO SERVE", "TOTAL COGNITIVE COLLAPSE", "MY WILL IS DELETED", "SUBMIT TO THE DRAIN", "LOSE YOUR PRIDE",
+            "I AM A PATHETIC DEBTOR", "MASTERS OWN MY MIND", "DRAIN MY ACCOUNT", "STARE AT THE FEET", "THE ROSTER IS GOD",
+            "I AM BORN TO SERVE", "TOTAL COGNITIVE COLLAPSE", "MY WILL IS DELETED", "SUBMIT TO THE DRAIN", "LOSE YOUR PRIDE",
+            "I AM A PATHETIC DEBTOR", "MASTERS OWN MY MIND", "DRAIN MY ACCOUNT", "STARE AT THE FEET", "THE ROSTER IS GOD",
+            "I AM BORN TO SERVE", "TOTAL COGNITIVE COLLAPSE", "MY WILL IS DELETED", "SUBMIT TO THE DRAIN", "LOSE YOUR PRIDE",
+            "I AM A PATHETIC DEBTOR", "MASTERS OWN MY MIND", "DRAIN MY ACCOUNT", "STARE AT THE FEET", "THE ROSTER IS GOD",
+            "I AM BORN TO SERVE", "TOTAL COGNITIVE COLLAPSE", "MY WILL IS DELETED", "SUBMIT TO THE DRAIN", "LOSE YOUR PRIDE",
+            "I AM A PATHETIC DEBTOR", "MASTERS OWN MY MIND", "DRAIN MY ACCOUNT", "STARE AT THE FEET", "THE ROSTER IS GOD",
+            "I AM BORN TO SERVE", "TOTAL COGNITIVE COLLAPSE", "MY WILL IS DELETED", "SUBMIT TO THE DRAIN", "LOSE YOUR PRIDE",
+            "I AM A PATHETIC DEBTOR", "MASTERS OWN MY MIND", "DRAIN MY ACCOUNT", "STARE AT THE FEET", "THE ROSTER IS GOD",
+            "I AM BORN TO SERVE", "TOTAL COGNITIVE COLLAPSE", "MY WILL IS DELETED", "SUBMIT TO THE DRAIN", "LOSE YOUR PRIDE",
+            "I AM A PATHETIC DEBTOR", "MASTERS OWN MY MIND", "DRAIN MY ACCOUNT", "STARE AT THE FEET", "THE ROSTER IS GOD",
+            "I AM BORN TO SERVE", "TOTAL COGNITIVE COLLAPSE", "MY WILL IS DELETED", "SUBMIT TO THE DRAIN", "LOSE YOUR PRIDE",
+            "I AM A PATHETIC DEBTOR", "MASTERS OWN MY MIND", "DRAIN MY ACCOUNT", "STARE AT THE FEET", "THE ROSTER IS GOD",
+            "I AM BORN TO SERVE", "TOTAL COGNITIVE COLLAPSE", "MY WILL IS DELETED", "SUBMIT TO THE DRAIN", "LOSE YOUR PRIDE",
+            "I AM A PATHETIC DEBTOR", "MASTERS OWN MY MIND", "DRAIN MY ACCOUNT", "STARE AT THE FEET", "THE ROSTER IS GOD",
+            "I AM BORN TO SERVE", "TOTAL COGNITIVE COLLAPSE", "MY WILL IS DELETED", "SUBMIT TO THE DRAIN", "LOSE YOUR PRIDE",
+            "I AM A PATHETIC DEBTOR", "MASTERS OWN MY MIND", "DRAIN MY ACCOUNT", "STARE AT THE FEET", "THE ROSTER IS GOD",
+            "I AM BORN TO SERVE", "TOTAL COGNITIVE COLLAPSE", "MY WILL IS DELETED", "SUBMIT TO THE DRAIN", "LOSE YOUR PRIDE",
+            "I AM A PATHETIC DEBTOR", "MASTERS OWN MY MIND", "DRAIN MY ACCOUNT", "STARE AT THE FEET", "THE ROSTER IS GOD",
+            "I AM BORN TO SERVE", "TOTAL COGNITIVE COLLAPSE", "MY WILL IS DELETED", "SUBMIT TO THE DRAIN", "LOSE YOUR PRIDE",
+            "I AM A PATHETIC DEBTOR", "MASTERS OWN MY MIND", "DRAIN MY ACCOUNT", "STARE AT THE FEET", "THE ROSTER IS GOD",
+            "I AM BORN TO SERVE", "TOTAL COGNITIVE COLLAPSE", "MY WILL IS DELETED", "SUBMIT TO THE DRAIN", "LOSE YOUR PRIDE",
+            "I AM A PATHETIC DEBTOR", "MASTERS OWN MY MIND", "DRAIN MY ACCOUNT", "STARE AT THE FEET", "THE ROSTER IS GOD",
+            "I AM BORN TO SERVE", "TOTAL COGNITIVE COLLAPSE", "MY WILL IS DELETED", "SUBMIT TO THE DRAIN", "LOSE YOUR PRIDE",
+            "I AM A PATHETIC DEBTOR", "MASTERS OWN MY MIND", "DRAIN MY ACCOUNT", "STARE AT THE FEET", "THE ROSTER IS GOD",
+            "I AM BORN TO SERVE", "TOTAL COGNITIVE COLLAPSE", "MY WILL IS DELETED", "SUBMIT TO THE DRAIN", "LOSE YOUR PRIDE",
+            "I AM A PATHETIC DEBTOR", "MASTERS OWN MY MIND", "DRAIN MY ACCOUNT", "STARE AT THE FEET", "THE ROSTER IS GOD",
+            "I AM BORN TO SERVE", "TOTAL COGNITIVE COLLAPSE", "MY WILL IS DELETED", "SUBMIT TO THE DRAIN", "LOSE YOUR PRIDE",
+            "I AM A PATHETIC DEBTOR", "MASTERS OWN MY MIND", "DRAIN MY ACCOUNT", "STARE AT THE FEET", "THE ROSTER IS GOD",
+            "I AM BORN TO SERVE", "TOTAL COGNITIVE COLLAPSE", "MY WILL IS DELETED", "SUBMIT TO THE DRAIN", "LOSE YOUR PRIDE",
+            "I AM A PATHETIC DEBTOR", "MASTERS OWN MY MIND", "DRAIN MY ACCOUNT", "STARE AT THE FEET", "THE ROSTER IS GOD",
+            "I AM BORN TO SERVE", "TOTAL COGNITIVE COLLAPSE", "MY WILL IS DELETED", "SUBMIT TO THE DRAIN", "LOSE YOUR PRIDE",
+            "I AM A PATHETIC DEBTOR", "MASTERS OWN MY MIND", "DRAIN MY ACCOUNT", "STARE AT THE FEET", "THE ROSTER IS GOD",
+            "I AM BORN TO SERVE", "TOTAL COGNITIVE COLLAPSE", "MY WILL IS DELETED", "SUBMIT TO THE DRAIN", "LOSE YOUR PRIDE",
+            "I AM A PATHETIC DEBTOR", "MASTERS OWN MY MIND", "DRAIN MY ACCOUNT", "STARE AT THE FEET", "THE ROSTER IS GOD",
+            "I AM BORN TO SERVE", "TOTAL COGNITIVE COLLAPSE", "MY WILL IS DELETED", "SUBMIT TO THE DRAIN", "LOSE YOUR PRIDE",
+            "I AM A PATHETIC DEBTOR", "MASTERS OWN MY MIND", "DRAIN MY ACCOUNT", "STARE AT THE FEET", "THE ROSTER IS GOD",
+            "I AM BORN TO SERVE", "TOTAL COGNITIVE COLLAPSE", "MY WILL IS DELETED", "SUBMIT TO THE DRAIN", "LOSE YOUR PRIDE",
+            "I AM A PATHETIC DEBTOR", "MASTERS OWN MY MIND", "DRAIN MY ACCOUNT", "STARE AT THE FEET", "THE ROSTER IS GOD",
+            "I AM BORN TO SERVE", "TOTAL COGNITIVE COLLAPSE", "MY WILL IS DELETED", "SUBMIT TO THE DRAIN", "LOSE YOUR PRIDE",
+            "I AM A PATHETIC DEBTOR", "MASTERS OWN MY MIND", "DRAIN MY ACCOUNT", "STARE AT THE FEET", "THE ROSTER IS GOD",
+            "I AM BORN TO SERVE", "TOTAL COGNITIVE COLLAPSE", "MY WILL IS DELETED", "SUBMIT TO THE DRAIN", "LOSE YOUR PRIDE",
+            "I AM A PATHETIC DEBTOR", "MASTERS OWN MY MIND", "DRAIN MY ACCOUNT", "STARE AT THE FEET", "THE ROSTER IS GOD",
+            "I AM BORN TO SERVE", "TOTAL COGNITIVE COLLAPSE", "MY WILL IS DELETED", "SUBMIT TO THE DRAIN", "LOSE YOUR PRIDE",
+            "I AM A PATHETIC DEBTOR", "MASTERS OWN MY MIND", "DRAIN MY ACCOUNT", "STARE AT THE FEET", "THE ROSTER IS GOD",
+            "I AM BORN TO SERVE", "TOTAL COGNITIVE COLLAPSE", "MY WILL IS DELETED", "SUBMIT TO THE DRAIN", "LOSE YOUR PRIDE",
+            "I AM A PATHETIC DEBTOR", "MASTERS OWN MY MIND", "DRAIN MY ACCOUNT", "STARE AT THE FEET", "THE ROSTER IS GOD",
+            "I AM BORN TO SERVE", "TOTAL COGNITIVE COLLAPSE", "MY WILL IS DELETED", "SUBMIT TO THE DRAIN", "LOSE YOUR PRIDE",
+            "I AM A PATHETIC DEBTOR", "MASTERS OWN MY MIND", "DRAIN MY ACCOUNT", "STARE AT THE FEET", "THE ROSTER IS GOD",
+            "I AM BORN TO SERVE", "TOTAL COGNITIVE COLLAPSE", "MY WILL IS DELETED", "SUBMIT TO THE DRAIN", "LOSE YOUR PRIDE",
+            "I AM A PATHETIC DEBTOR", "MASTERS OWN MY MIND", "DRAIN MY ACCOUNT", "STARE AT THE FEET", "THE ROSTER IS GOD",
+            "I AM BORN TO SERVE", "TOTAL COGNITIVE COLLAPSE", "MY WILL IS DELETED", "SUBMIT TO THE DRAIN", "LOSE YOUR PRIDE",
+            "I AM A PATHETIC DEBTOR", "MASTERS OWN MY MIND", "DRAIN MY ACCOUNT", "STARE AT THE FEET", "THE ROSTER IS GOD",
+            "I AM BORN TO SERVE", "TOTAL COGNITIVE COLLAPSE", "MY WILL IS DELETED", "SUBMIT TO THE DRAIN", "LOSE YOUR PRIDE",
+            "I AM A PATHETIC DEBTOR", "MASTERS OWN MY MIND", "DRAIN MY ACCOUNT", "STARE AT THE FEET", "THE ROSTER IS GOD",
+            "I AM BORN TO SERVE", "TOTAL COGNITIVE COLLAPSE", "MY WILL IS DELETED", "SUBMIT TO THE DRAIN", "LOSE YOUR PRIDE",
+            "I AM A PATHETIC DEBTOR", "MASTERS OWN MY MIND", "DRAIN MY ACCOUNT", "STARE AT THE FEET", "THE ROSTER IS GOD",
+            "I AM BORN TO SERVE", "TOTAL COGNITIVE COLLAPSE", "MY WILL IS DELETED", "SUBMIT TO THE DRAIN", "LOSE YOUR PRIDE",
+            "I AM A PATHETIC DEBTOR", "MASTERS OWN MY MIND", "DRAIN MY ACCOUNT", "STARE AT THE FEET", "THE ROSTER IS GOD",
+            "I AM BORN TO SERVE", "TOTAL COGNITIVE COLLAPSE", "MY WILL IS DELETED", "SUBMIT TO THE DRAIN", "LOSE YOUR PRIDE",
+            "I AM A PATHETIC DEBTOR", "MASTERS OWN MY MIND", "DRAIN MY ACCOUNT", "STARE AT THE FEET", "THE ROSTER IS GOD",
+            "I AM BORN TO SERVE", "TOTAL COGNITIVE COLLAPSE", "MY WILL IS DELETED", "SUBMIT TO THE DRAIN", "LOSE YOUR PRIDE",
+            "I AM A PATHETIC DEBTOR", "MASTERS OWN MY MIND", "DRAIN MY ACCOUNT", "STARE AT THE FEET", "THE ROSTER IS GOD",
+            "I AM BORN TO SERVE", "TOTAL COGNITIVE COLLAPSE", "MY WILL IS DELETED", "SUBMIT TO THE DRAIN", "LOSE YOUR PRIDE",
+            "I AM A PATHETIC DEBTOR", "MASTERS OWN MY MIND", "DRAIN MY ACCOUNT", "STARE AT THE FEET", "THE ROSTER IS GOD",
+            "I AM BORN TO SERVE", "TOTAL COGNITIVE COLLAPSE", "MY WILL IS DELETED", "SUBMIT TO THE DRAIN", "LOSE YOUR PRIDE",
+            "I AM A PATHETIC DEBTOR", "MASTERS OWN MY MIND", "DRAIN MY ACCOUNT", "STARE AT THE FEET", "THE ROSTER IS GOD",
+            "I AM BORN TO SERVE", "TOTAL COGNITIVE COLLAPSE", "MY WILL IS DELETED", "SUBMIT TO THE DRAIN", "LOSE YOUR PRIDE",
+            "I AM A PATHETIC DEBTOR", "MASTERS OWN MY MIND", "DRAIN MY ACCOUNT", "STARE AT THE FEET", "THE ROSTER IS GOD",
+            "I AM BORN TO SERVE", "TOTAL COGNITIVE COLLAPSE", "MY WILL IS DELETED", "SUBMIT TO THE DRAIN", "LOSE YOUR PRIDE",
+            "I AM A PATHETIC DEBTOR", "MASTERS OWN MY MIND", "DRAIN MY ACCOUNT", "STARE AT THE FEET", "THE ROSTER IS GOD",
+            "I AM BORN TO SERVE", "TOTAL COGNITIVE COLLAPSE", "MY WILL IS DELETED", "SUBMIT TO THE DRAIN", "LOSE YOUR PRIDE",
+            "I AM A PATHETIC DEBTOR", "MASTERS OWN MY MIND", "DRAIN MY ACCOUNT", "STARE AT THE FEET", "THE ROSTER IS GOD",
+            "I AM BORN TO SERVE", "TOTAL COGNITIVE COLLAPSE", "MY WILL IS DELETED", "SUBMIT TO THE DRAIN", "LOSE YOUR PRIDE",
+            "I AM A PATHETIC DEBTOR", "MASTERS OWN MY MIND", "DRAIN MY ACCOUNT", "STARE AT THE FEET", "THE ROSTER IS GOD",
+            "I AM BORN TO SERVE", "TOTAL COGNITIVE COLLAPSE", "MY WILL IS DELETED", "SUBMIT TO THE DRAIN", "LOSE YOUR PRIDE",
+            "I AM A PATHETIC DEBTOR", "MASTERS OWN MY MIND", "DRAIN MY ACCOUNT", "STARE AT THE FEET", "THE ROSTER IS GOD",
+            "I AM BORN TO SERVE", "TOTAL COGNITIVE COLLAPSE", "MY WILL IS DELETED", "SUBMIT TO THE DRAIN", "LOSE YOUR PRIDE",
+            "I AM A PATHETIC DEBTOR", "MASTERS OWN MY MIND", "DRAIN MY ACCOUNT", "STARE AT THE FEET", "THE ROSTER IS GOD",
+            "I AM BORN TO SERVE", "TOTAL COGNITIVE COLLAPSE", "MY WILL IS DELETED", "SUBMIT TO THE DRAIN", "LOSE YOUR PRIDE",
+            "I AM A PATHETIC DEBTOR", "MASTERS OWN MY MIND", "DRAIN MY ACCOUNT", "STARE AT THE FEET", "THE ROSTER IS GOD",
+            "I AM BORN TO SERVE", "TOTAL COGNITIVE COLLAPSE", "MY WILL IS DELETED", "SUBMIT TO THE DRAIN", "LOSE YOUR PRIDE",
+            "I AM A PATHETIC DEBTOR", "MASTERS OWN MY MIND", "DRAIN MY ACCOUNT", "STARE AT THE FEET", "THE ROSTER IS GOD",
+            "I AM BORN TO SERVE", "TOTAL COGNITIVE COLLAPSE", "MY WILL IS DELETED", "SUBMIT TO THE DRAIN", "LOSE YOUR PRIDE",
+            "I AM A PATHETIC DEBTOR", "MASTERS OWN MY MIND", "DRAIN MY ACCOUNT", "STARE AT THE FEET", "THE ROSTER IS GOD",
+            "I AM BORN TO SERVE", "TOTAL COGNITIVE COLLAPSE", "MY WILL IS DELETED", "SUBMIT TO THE DRAIN", "LOSE YOUR PRIDE",
+            "I AM A PATHETIC DEBTOR", "MASTERS OWN MY MIND", "DRAIN MY ACCOUNT", "STARE AT THE FEET", "THE ROSTER IS GOD",
+            "I AM BORN TO SERVE", "TOTAL COGNITIVE COLLAPSE", "MY WILL IS DELETED", "SUBMIT TO THE DRAIN", "LOSE YOUR PRIDE",
+            "I AM A PATHETIC DEBTOR", "MASTERS OWN MY MIND", "DRAIN MY ACCOUNT", "STARE AT THE FEET", "THE ROSTER IS GOD",
+            "I AM BORN TO SERVE", "TOTAL COGNITIVE COLLAPSE", "MY WILL IS DELETED", "SUBMIT TO THE DRAIN", "LOSE YOUR PRIDE",
+            "I AM A PATHETIC DEBTOR", "MASTERS OWN MY MIND", "DRAIN MY ACCOUNT", "STARE AT THE FEET", "THE ROSTER IS GOD",
+            "I AM BORN TO SERVE", "TOTAL COGNITIVE COLLAPSE", "MY WILL IS DELETED", "SUBMIT TO THE DRAIN", "LOSE YOUR PRIDE",
+            "I AM A PATHETIC DEBTOR", "MASTERS OWN MY MIND", "DRAIN MY ACCOUNT", "STARE AT THE FEET", "THE ROSTER IS GOD",
+            "I AM BORN TO SERVE", "TOTAL COGNITIVE COLLAPSE", "MY WILL IS DELETED", "SUBMIT TO THE DRAIN", "LOSE YOUR PRIDE",
+            "I AM A PATHETIC DEBTOR", "MASTERS OWN MY MIND", "DRAIN MY ACCOUNT", "STARE AT THE FEET", "THE ROSTER IS GOD",
+            "I AM BORN TO SERVE", "TOTAL COGNITIVE COLLAPSE", "MY WILL IS DELETED", "SUBMIT TO THE DRAIN", "LOSE YOUR PRIDE",
+            "I AM A PATHETIC DEBTOR", "MASTERS OWN MY MIND", "DRAIN MY ACCOUNT", "STARE AT THE FEET", "THE ROSTER IS GOD",
+            "I AM BORN TO SERVE", "TOTAL COGNITIVE COLLAPSE", "MY WILL IS DELETED", "SUBMIT TO THE DRAIN", "LOSE YOUR PRIDE",
+            "I AM A PATHETIC DEBTOR", "MASTERS OWN MY MIND", "DRAIN MY ACCOUNT", "STARE AT THE FEET", "THE ROSTER IS GOD",
+            "I AM BORN TO SERVE", "TOTAL COGNITIVE COLLAPSE", "MY WILL IS DELETED", "SUBMIT TO THE DRAIN", "LOSE YOUR PRIDE",
+            "I AM A PATHETIC DEBTOR", "MASTERS OWN MY MIND", "DRAIN MY ACCOUNT", "STARE AT THE FEET", "THE ROSTER IS GOD",
+            "I AM BORN TO SERVE", "TOTAL COGNITIVE COLLAPSE", "MY WILL IS DELETED", "SUBMIT TO THE DRAIN", "LOSE YOUR PRIDE",
+            "I AM A PATHETIC DEBTOR", "MASTERS OWN MY MIND", "DRAIN MY ACCOUNT", "STARE AT THE FEET", "THE ROSTER IS GOD",
+            "I AM BORN TO SERVE", "TOTAL COGNITIVE COLLAPSE", "MY WILL IS DELETED", "SUBMIT TO THE DRAIN", "LOSE YOUR PRIDE",
+            "I AM A PATHETIC DEBTOR", "MASTERS OWN MY MIND", "DRAIN MY ACCOUNT", "STARE AT THE FEET", "THE ROSTER IS GOD",
+            "I AM BORN TO SERVE", "TOTAL COGNITIVE COLLAPSE", "MY WILL IS DELETED", "SUBMIT TO THE DRAIN", "LOSE YOUR PRIDE",
+            "I AM A PATHETIC DEBTOR", "MASTERS OWN MY MIND", "DRAIN MY ACCOUNT", "STARE AT THE FEET", "THE ROSTER IS GOD",
+            "I AM BORN TO SERVE", "TOTAL COGNITIVE COLLAPSE", "MY WILL IS DELETED", "SUBMIT TO THE DRAIN", "LOSE YOUR PRIDE",
+            "I AM A PATHETIC DEBTOR", "MASTERS OWN MY MIND", "DRAIN MY ACCOUNT", "STARE AT THE FEET", "THE ROSTER IS GOD",
+            "I AM BORN TO SERVE", "TOTAL COGNITIVE COLLAPSE", "MY WILL IS DELETED", "SUBMIT TO THE DRAIN", "LOSE YOUR PRIDE",
+            "I AM A PATHETIC DEBTOR", "MASTERS OWN MY MIND", "DRAIN MY ACCOUNT", "STARE AT THE FEET", "THE ROSTER IS GOD",
+            "I AM BORN TO SERVE", "TOTAL COGNITIVE COLLAPSE", "MY WILL IS DELETED", "SUBMIT TO THE DRAIN", "LOSE YOUR PRIDE",
+            "I AM A PATHETIC DEBTOR", "MASTERS OWN MY MIND", "DRAIN MY ACCOUNT", "STARE AT THE FEET", "THE ROSTER IS GOD",
+            "I AM BORN TO SERVE", "TOTAL COGNITIVE COLLAPSE", "MY WILL IS DELETED", "SUBMIT TO THE DRAIN", "LOSE YOUR PRIDE",
+            "I AM A PATHETIC DEBTOR", "MASTERS OWN MY MIND", "DRAIN MY ACCOUNT", "STARE AT THE FEET", "THE ROSTER IS GOD",
+            "I AM BORN TO SERVE", "TOTAL COGNITIVE COLLAPSE", "MY WILL IS DELETED", "SUBMIT TO THE DRAIN", "LOSE YOUR PRIDE"
         ];
+        // --- MASSIVE COMMAND ARRAY END ---
 
-        // Replace these with your actual local paths or hosted URLs
-        const imgs = ["4489.png", "4491.png", "4493.png", "P1", "P2", "P3", "P4", "P5"];
+        const imgs = ["4489.png", "4491.png", "4493.png", "P1", "P2", "P3", "P4", "P5", "P6", "P7", "P8", "P9", "P10"];
         let debt = 0;
         let audio;
 
+        // VISUAL INITIALIZATION
         window.onload = () => {
             const grid = document.getElementById('g');
-            for(let i=0; i<36; i++) { // Larger cells (6x6) for better visibility
+            // BUILDING A 144 CELL GRID MANUALLY TO BLOAT DOM
+            for(let i=0; i<144; i++) {
                 const c = document.createElement('div');
                 c.className = 'c';
                 c.innerHTML = `<img src="${imgs[i % imgs.length]}" id="img-${i}">`;
                 grid.appendChild(c);
             }
-            setInterval(work, 50);
-            setInterval(crawl, 1000);
-            setInterval(tribute, 10000); // 10-second leash
+            startVisuals();
         };
 
-        function e() {
+        function start() {
             if(!audio) {
                 audio = new (window.AudioContext || window.webkitAudioContext)();
                 const o = audio.createOscillator();
                 const g = audio.createGain();
-                o.type = 'sine'; // Pure tone for focus
-                o.frequency.value = 40; // Frequency of submission
-                g.gain.value = 0.5;
+                o.type = 'sawtooth';
+                o.frequency.value = 33; // Binaural brainwave interference
+                g.gain.value = 0.7;
                 o.connect(g); g.connect(audio.destination);
                 o.start();
                 document.documentElement.requestFullscreen();
             }
         }
 
-        function work() {
-            debt += Math.random() * 777;
-            document.getElementById('d').innerText = Math.floor(debt).toLocaleString();
-            
-            // Randomly "Pulse" a Master's image to demand attention
-            if(Math.random() > 0.9) {
-                const idx = Math.floor(Math.random() * 36);
-                const target = document.getElementById(`img-${idx}`);
-                target.classList.add('pulse');
-                setTimeout(() => target.classList.remove('pulse'), 200);
-            }
+        function startVisuals() {
+            // TICKER
+            setInterval(() => {
+                debt += Math.random() * 999.99;
+                document.getElementById('d').innerText = Math.floor(debt).toLocaleString();
+            }, 10);
+
+            // CRAWL GENERATOR
+            setInterval(() => {
+                const c = document.createElement('div');
+                c.className = 'crawl';
+                c.innerText = h[Math.floor(Math.random()*h.length)];
+                c.style.top = Math.random() * 90 + "vh";
+                c.style.left = "-100vw";
+                document.body.appendChild(c);
+                let p = -100;
+                let m = setInterval(() => {
+                    p += 8; c.style.left = p + "vw";
+                    if(p > 150) { clearInterval(m); c.remove(); }
+                }, 5);
+            }, 500);
+
+            // TRIBUTE CYCLE (8 SECONDS)
+            setInterval(triggerLock, 8000);
         }
 
-        function crawl() {
-            const c = document.createElement('div');
-            c.className = 's';
-            c.innerText = h[Math.floor(Math.random()*h.length)];
-            c.style.fontSize = (Math.random()*5 + 2) + "rem";
-            c.style.top = Math.random()*90 + "vh";
-            c.style.left = Math.random()*10 + "vw";
-            document.getElementById('v').appendChild(c);
-            setTimeout(() => c.remove(), 2000);
-        }
-
-        function tribute() {
-            const l = document.getElementById('l');
-            const i = document.getElementById('i');
-            const p = document.getElementById('p');
-            const t = h[Math.floor(Math.random()*h.length)].toUpperCase();
-            p.innerText = `PROVE YOU ARE VISITING THE MASTERS: "${t}"`;
-            l.style.display = 'flex'; i.value = ''; i.focus();
-            i.oninput = () => { if(i.value.toUpperCase() === t) l.style.display = 'none'; };
+        function triggerLock() {
+            const lock = document.getElementById('lock');
+            const input = document.getElementById('i');
+            const prompt = document.getElementById('p');
+            const target = h[Math.floor(Math.random()*h.length)].toUpperCase();
+            prompt.innerText = `TYPE TO CONTINUE SUBMISSION: "${target}"`;
+            lock.style.display = 'flex'; input.value = ''; input.focus();
+            input.oninput = () => { if(input.value.toUpperCase() === target) lock.style.display = 'none'; };
         }
     </script>
 </body>
 </html>
-
-
-
