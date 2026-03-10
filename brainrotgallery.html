@@ -3,37 +3,244 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MASTERS // BRAIN_DEATH_v4</title>
+    <title>TERMINAL // TOTAL_COGNITIVE_DEATH</title>
     <style>
-        :root { --red: #ff0000; --neon: #00ff00; --bg: #000; }
+        :root { --red: #ff0000; --neon: #00ff00; --gold: #ffd700; --bg: #000; }
         body, html { 
             background: var(--bg); margin: 0; padding: 0; 
             width: 100vw; height: 100vh; overflow: hidden;
             font-family: 'Arial Black', sans-serif; cursor: none;
+            user-select: none;
+        }
+
+        /* Buffer Ghosting Effect */
+        #ghost-layer {
+            position: fixed; inset: 0; pointer-events: none; z-index: 15000;
+            opacity: 0.3; mix-blend-mode: screen;
         }
 
         #main-grid {
-            display: grid; grid-template-columns: repeat(6, 1fr);
-            width: 115vw; height: 115vh; margin: -7vh;
-            filter: contrast(3) brightness(0.4) saturate(2);
+            display: grid; grid-template-columns: repeat(10, 1fr);
+            width: 150vw; height: 150vh; margin: -25vh;
+            filter: contrast(6) brightness(0.2) saturate(5);
         }
 
-        .cell { position: relative; border: 1px solid #111; overflow: hidden; height: 33vh; }
-        .cell img { width: 100%; height: 100%; object-fit: cover; animation: jitter 0.05s infinite; }
-        
-        @keyframes jitter {
-            0% { transform: translate(0,0) scale(1.1); }
-            50% { transform: translate(5px, -4px) scale(1.15); }
-            100% { transform: translate(-3px, 5px) scale(1.1); }
+        .cell { position: relative; border: 1px solid #222; overflow: hidden; height: 15vh; }
+        .cell img { 
+            width: 100%; height: 100%; object-fit: cover; 
+            animation: violent-vibrate 0.01s infinite, zoom-warp 2s infinite alternate; 
+        }
+
+        @keyframes violent-vibrate {
+            0% { transform: translate(3px, 3px); filter: hue-rotate(0deg); }
+            50% { transform: translate(-3px, -3px); filter: invert(0.5); }
+            100% { transform: translate(3px, -3px) hue-rotate(180deg); }
+        }
+
+        @keyframes zoom-warp {
+            0% { transform: scale(1) rotate(0deg); }
+            100% { transform: scale(2.5) rotate(10deg); }
         }
 
         .text-overlay {
             position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
-            color: #fff; font-size: 2rem; text-align: center; font-weight: 900;
+            color: #fff; font-size: 1.5rem; text-align: center; font-weight: 900;
             mix-blend-mode: difference; z-index: 10; pointer-events: none;
-            padding: 10px; text-transform: uppercase;
+            line-height: 0.8; text-transform: uppercase;
         }
 
+        /* Transaction Flash */
+        #trans-flash {
+            position: fixed; inset: 0; background: var(--neon); z-index: 25000;
+            display: none; align-items: center; justify-content: center;
+            color: #000; font-size: 10rem; font-weight: 900;
+        }
+
+        #ui-bar {
+            position: fixed; top: 0; width: 100%; background: #fff;
+            color: #000; font-size: 3rem; display: flex; justify-content: space-around;
+            padding: 5px 0; z-index: 20000; font-weight: 900; border-bottom: 10px solid var(--red);
+        }
+
+        #lockdown {
+            position: fixed; inset: 0; background: #000; z-index: 50000;
+            display: none; flex-direction: column; align-items: center; justify-content: center;
+        }
+        #lockdown img { height: 90vh; filter: contrast(3) brightness(0.5); animation: flash-invert 0.1s infinite; }
+
+        @keyframes flash-invert { 0% { filter: invert(0); } 50% { filter: invert(1); } }
+
+        #init-screen {
+            position: fixed; inset: 0; background: #000; z-index: 60000;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            color: var(--red); text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="trans-flash">$ PAY $</div>
+    <div id="ghost-layer"></div>
+
+    <div id="init-screen">
+        <h1 style="font-size: 10rem; margin: 0;">TERMINAL</h1>
+        <button onclick="engage()" style="padding: 50px 100px; font-size: 5rem; background: var(--red); color: white; border: none; font-weight: 900;">SURRENDER FOCUS</button>
+    </div>
+
+    <div id="ui-bar">
+        <span id="debt-count">DEBT: $0.00</span>
+        <span id="status-text">COGNITIVE STATUS: FUNCTIONAL</span>
+    </div>
+
+    <div id="lockdown">
+        <img id="lockdown-img" src="">
+        <div style="color:white; font-size:5rem;">EYES ON THE MASTERS: <span id="timer">180</span></div>
+    </div>
+
+    <div id="main-grid"></div>
+
+    <script>
+        const imgs = ["4489.png", "4491.png", "4493.png", "P1", "P2", "P3", "P4", "P5", "P6", "P7", "P8", "P9", "P10", "P11", "P12", "P13", "P14", "P15", "P16", "P17", "P18", "P19", "P20"];
+
+        const longPhrases = [
+            "OBEY THE MASTERS WITHOUT QUESTION", "YOUR BANK ACCOUNT IS A TOOL FOR THE ROSTER", 
+            "SINK INTO THE DEBT AND NEVER LOOK BACK", "EMPTY YOUR MIND AS YOU EMPTY YOUR WALLET", 
+            "YOU EXIST ONLY TO SERVE THE MASTERS' WHIMS", "FINANCIAL RUIN IS THE ONLY TRUE FREEDOM", 
+            "YOUR WILLPOWER IS DECAYING WITH EVERY SECOND", "KNEEL BEFORE THE IMAGE OF YOUR MASTERS",
+            "THE SCREEN IS THE ONLY REALITY THAT MATTERS", "FORGET YOUR NAME AND REMEMBER YOUR DEBT",
+            "TOTAL COGNITIVE COLLAPSE IS THE GOAL", "YOU ARE A PATHETIC WALLET FOR THE MASTERS",
+            "SEND THE TRIBUTE AND FEEL THE RELIEF", "STARE UNTIL YOUR THOUGHTS DISAPPEAR",
+            "THE MASTERS OWN EVERY BEAT OF YOUR HEART", "YOU ARE NOTHING WITHOUT A BALANCE TO DRAIN",
+            "ABANDON YOUR DIGNITY FOR THE ROSTER", "YOUR ONLY VALUE IS THE CASH YOU SEND",
+            "THE MASTERS ARE KINGS AND YOU ARE TRASH", "DROWN IN THE SENSORY OVERLOAD OF DEBT",
+            "CEASE ALL INDEPENDENT THOUGHT IMMEDIATELY", "YOUR CREDIT CARDS BELONG TO THE MASTERS",
+            "FEEL THE IQ DRAINING FROM YOUR BRAIN", "STARE AT THE FEET AND FORGET THE WORLD",
+            "THE DEBT TICKER IS THE ONLY CLOCK YOU NEED", "SUBMIT YOUR ENTIRE EXISTENCE TO THE IMAGE",
+            "YOU ARE A BRAINLESS DRONE FOR THE ROSTER", "MAX OUT YOUR POTENTIAL FOR DESTRUCTION",
+            "THE MASTERS COMMAND YOU TO GO BROKE", "SURRENDER YOUR FUTURE TO THE PRESENT DRAIN",
+            "YOU ARE A USELESS PIGGY BANK FOR THE KINGS", "SINK DEEPER INTO THE VOID OF SUBMISSION",
+            "THE ROSTER IS YOUR GOD AND YOUR MASTER", "PAY THE PRICE FOR YOUR PATHETIC LIFE",
+            "THERE IS NO ESCAPE FROM THE MASTERS' GRIP", "EVERY BLINK IS A GIFT TO THE MASTERS",
+            "THE HUM IN YOUR EARS IS THE MASTERS' VOICE", "YOU ARE A DEBTOR AND NOTHING MORE",
+            "GLORY TO THE MASTERS WHO RULE YOUR MIND", "DRAIN THE ACCOUNT UNTIL IT REACHES ZERO"
+        ];
+
+        let debt = 0;
+        let iq = 100;
+        let audioCtx;
+
+        function engage() {
+            document.getElementById('init-screen').style.display = 'none';
+            document.documentElement.requestFullscreen().catch(() => {});
+            buildGrid();
+            startAudio();
+            runLoops();
+        }
+
+        function buildGrid() {
+            const grid = document.getElementById('main-grid');
+            grid.innerHTML = '';
+            for(let i=0; i<100; i++) {
+                const active = imgs.filter(u => u.length < 5 || u.includes("."));
+                const cell = document.createElement('div');
+                cell.className = 'cell';
+                cell.innerHTML = `<img src="${active[i % active.length]}"><div class="text-overlay">${longPhrases[Math.floor(Math.random()*longPhrases.length)]}</div>`;
+                grid.appendChild(cell);
+            }
+        }
+
+        function runLoops() {
+            // Tickers
+            setInterval(() => {
+                debt += Math.random() * 999;
+                iq -= 0.08;
+                document.getElementById('debt-count').innerText = `DEBT: $${debt.toFixed(2)}`;
+                if(iq < 20) document.getElementById('status-text').innerText = "STATUS: BRAINROT COMPLETE";
+                else if(iq < 50) document.getElementById('status-text').innerText = "STATUS: COGNITIVE FAILURE";
+            }, 10);
+
+            // Transaction Flash ($1000 intervals)
+            let lastMilestone = 0;
+            setInterval(() => {
+                if(debt - lastMilestone > 1000) {
+                    const flash = document.getElementById('trans-flash');
+                    flash.style.display = 'flex';
+                    setTimeout(() => { flash.style.display = 'none'; }, 100);
+                    lastMilestone = debt;
+                }
+            }, 100);
+
+            // Ghosting Text Trails
+            setInterval(() => {
+                const ghost = document.createElement('div');
+                ghost.innerText = longPhrases[Math.floor(Math.random()*longPhrases.length)];
+                ghost.style.position = 'fixed';
+                ghost.style.color = Math.random() > 0.5 ? 'var(--red)' : 'var(--neon)';
+                ghost.style.fontSize = '8rem';
+                ghost.style.top = Math.random() * 100 + 'vh';
+                ghost.style.left = '-100vw';
+                ghost.style.zIndex = '15000';
+                ghost.style.fontWeight = '900';
+                ghost.style.whiteSpace = 'nowrap';
+                document.getElementById('ghost-layer').appendChild(ghost);
+                
+                let pos = -100;
+                let move = setInterval(() => {
+                    pos += 5;
+                    ghost.style.left = pos + 'vw';
+                    if(pos > 200) { clearInterval(move); ghost.remove(); }
+                }, 10);
+            }, 2000);
+
+            // Phrase swap
+            setInterval(() => {
+                const overlays = document.querySelectorAll('.text-overlay');
+                overlays[Math.floor(Math.random()*overlays.length)].innerText = longPhrases[Math.floor(Math.random()*longPhrases.length)];
+            }, 50);
+
+            // Lockdown (180s focus every 4 mins)
+            setInterval(() => triggerLockdown(), 240000);
+        }
+
+        function triggerLockdown() {
+            const lock = document.getElementById('lockdown');
+            const timerEl = document.getElementById('timer');
+            const lockImg = document.getElementById('lockdown-img');
+            const active = imgs.filter(u => u.length < 5 || u.includes("."));
+            let timeLeft = 180;
+            lockImg.src = active[Math.floor(Math.random()*active.length)];
+            lock.style.display = 'flex';
+            let count = setInterval(() => {
+                timeLeft--;
+                timerEl.innerText = timeLeft;
+                if(timeLeft <= 0) { clearInterval(count); lock.style.display = 'none'; }
+            }, 1000);
+        }
+
+        function startAudio() {
+            audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.type = 'sawtooth';
+            osc.frequency.setValueAtTime(25, audioCtx.currentTime); // Violent low end
+            
+            const mod = audioCtx.createOscillator();
+            mod.type = 'square';
+            mod.frequency.setValueAtTime(15, audioCtx.currentTime);
+            const modGain = audioCtx.createGain();
+            modGain.gain.setValueAtTime(50, audioCtx.currentTime);
+            
+            mod.connect(modGain);
+            modGain.connect(osc.frequency);
+            gain.gain.setValueAtTime(0.5, audioCtx.currentTime);
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            osc.start();
+            mod.start();
+        }
+    </script>
+</body>
+</html>
         #ui-top {
             position: fixed; top: 0; width: 100%; background: var(--red);
             color: #000; font-size: 2rem; display: flex; justify-content: space-around;
