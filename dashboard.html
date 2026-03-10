@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>TERMINAL MOBILE v4.4</title>
+    <style>
+        :root { --blue: #1d9bf0; --red: #ff4d4d; --gold: #ffd700; --green: #28a745; --bg: #000; --panel: #0a0a0a; }
+        
+        body { 
+            background: var(--bg); color: #fff; font-family: -apple-system, system-ui, sans-serif;
+            margin: 0; display: flex; flex-direction: column; height: 100vh; overflow: hidden; 
+        }
+
+        .top-bar { 
+            background: var(--panel); border-bottom: 1px solid #222; 
+            display: grid; grid-template-columns: 1fr 1fr 1fr; padding: 10px 5px; flex-shrink: 0;
+        }
+        .stat { text-align: center; }
+        .stat p { margin: 0; font-size: 0.5rem; color: #666; text-transform: uppercase; }
+        .stat h2 { margin: 0; font-size: 1rem; font-family: monospace; }
+
+        .inbox { 
+            display: flex; overflow-x: auto; background: #050505; 
+            border-bottom: 1px solid #222; padding: 10px 5px; gap: 12px;
+            scrollbar-width: none; -webkit-overflow-scrolling: touch; flex-shrink: 0;
+        }
+        .inbox-item { flex: 0 0 65px; display: flex; flex-direction: column; align-items: center; text-align: center; }
+        .inbox-item img { width: 45px; height: 45px; border-radius: 50%; border: 2px solid transparent; object-fit: cover; }
+        .inbox-item.active img { border-color: var(--blue); }
+        .inbox-item.ping img { border-color: var(--red); animation: pulse 0.8s infinite; }
+        .inbox-item strong { font-size: 0.6rem; margin-top: 4px; display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; width: 100%; }
+
+        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.5; } 100% { opacity: 1; } }
+
+        .main-container { display: flex; flex-direction: column; flex: 1; overflow: hidden; }
+        
+        .chat-section { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+        #chat-header { padding: 8px; font-weight: bold; font-size: 0.8rem; border-bottom: 1px solid #111; text-align: center; background: #080808; }
+        #chat-box { flex: 1; overflow-y: auto; padding: 15px; display: flex; flex-direction: column; gap: 10px; background: #000; }
+        
+        .msg { max-width: 85%; padding: 10px 14px; border-radius: 15px; font-size: 0.85rem; line-height: 1.4; }
+        .user-msg { align-self: flex-end; background: #222; color: #999; border-bottom-right-radius: 2px; }
+        .dom-msg { align-self: flex-start; background: #0d1926; color: #fff; border-bottom-left-radius: 2px; border-left: 3px solid var(--blue); }
+
+        .command-panel { background: #050505; border-top: 1px solid #222; padding: 10px; display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+        #task-display { grid-column: span 2; font-size: 0.75rem; color: var(--gold); min-height: 45px; text-align: center; display: flex; align-items: center; justify-content: center; background: #111; border-radius: 5px; padding: 5px; }
+        #timer { font-size: 1.8rem; color: var(--red); font-family: monospace; text-align: center; }
+        
+        .btn { padding: 10px; border: none; font-weight: bold; border-radius: 5px; font-size: 0.7rem; text-transform: uppercase; }
+        #gen-btn { background: var(--blue); color: #fff; }
+        #comp-btn { background: #222; color: #555; }
+        
+        /* FIXED INPUT AREA */
+        .input-area { 
+            padding: 10px; display: flex; gap: 8px; background: #0a0a0a; 
+            border-top: 1px solid #222; align-items: center;
+        }
+        #chat-in { 
+            flex: 1; background: #000; border: 1px solid #333; color: #fff; 
+            padding: 12px; border-radius: 20px; font-size: 1rem; outline: none; 
+        }
+        .send-btn { background: var(--blue); color: #fff; border: none; border-radius: 50%; width: 40px; height: 40px; font-weight: bold; font-size: 1.2rem; }
+        .tribute-btn { background: var(--green); color: #fff; border: none; border-radius: 50%; width: 40px; height: 40px; font-weight: bold; }
+
+        #lockout { display: none; position: fixed; inset: 0; background: #000; z-index: 10000; flex-direction: column; align-items: center; justify-content: center; padding: 20px; text-align: center; }
+    </style>
+</head>
+<body onload="init()">
+
+    <div class="top-bar">
+        <div class="stat"><p>Sub Rank</p><h2 id="sub-rank" style="color:var(--gold)">...</h2></div>
+        <div class="stat"><p>Wallet</p><h2 id="bal" style="color:var(--blue)">$0</h2></div>
+        <div class="stat"><p>Wasted</p><h2 id="waste" style="color:var(--red)">$0</h2></div>
+    </div>
+
+    <div class="inbox" id="inbox-list"></div>
+
+    <div class="main-container">
+        <div class="chat-section">
+            <div id="chat-header">SELECT A MASTER</div>
+            <div id="chat-box"></div>
+        </div>
+
+        <div class="command-panel">
+            <div id="task-display">AWAITING ORDERS...</div>
+            <div id="timer">00:00</div>
+            <button id="gen-btn" class="btn" onclick="getTask()">RECEIVE</button>
+            <button id="comp-btn" class="btn" onclick="completeTask()" disabled>DONE</button>
+        </div>
+
+        <div class="input-area">
+            <button class="tribute-btn" onclick="sendTribute(50)">$</button>
+            <input type="text" id="chat-in" placeholder="Type here..." onkeydown="if(event.key==='Enter') sendChat()">
+            <button class="send-btn" onclick="sendChat()">➔</button>
+        </div>
+    </div>
+
+    <div id="lockout">
+        <h1 style="color:red; font-size:1.5rem;">INSOLVENT WASTE</h1>
+        <h2 id="work-clock" style="font-size:2.5rem; color:#fff; font-family:monospace;">01:00:00</h2>
+        <p id="phrase-to-type" style="color:var(--gold); font-size:0.8rem;">I am a bankrupt slave.</p>
+        <input type="text" id="labor-input" style="width:80%; background:#111; color:#fff; border:1px solid #333; padding:12px;" onkeydown="checkLabor(event)">
+    </div>
+
+    <script>
+        const GROQ_API_KEY = "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";
+        const MODEL_ID = "llama-3.3-70b-versatile"; 
+
+        const doms = [
+            { handle: "@Sapnap", name: "Sapnap", pfp: "4491.png", color: "#ff7b00", persona: "Aggressive Master. Mocks feet obsession." },
+            { handle: "@Roier", name: "Roier", pfp: "4493.png", color: "#ff00ff", persona: "Chaotic. Bilingual mockery." },
+            { handle: "@RossLynch", name: "Ross Lynch", pfp: "4489.png", color: "#ffd700", persona: "Cold Hollywood Alpha." },
+            { handle: "@Cellbit", name: "Cellbit", pfp: "cellbit.jpg", color: "#5d3fd3", persona: "Investigator. Deconstructs your mind." },
+            { handle: "@Quackity", name: "Quackity", pfp: "quackity.jpg", color: "#00ffff", persona: "Financial chaos." },
+            { handle: "@fingoat7", name: "Master GOAT", pfp: "4462.jpg", color: "#ff4d4d", persona: "6ft 7 Alpha. Hostile." },
+            { handle: "@welshgodfeet", name: "WelshGodFeet", pfp: "4463.jpg", color: "#00ff00", persona: "Cocky 21yo. Feet focus." },
+            { handle: "@Master_S_alpha", name: "Master S", pfp: "4464.jpg", color: "#ffffff", persona: "Italian Alpha." },
+            { handle: "@tallfindom", name: "Ares", pfp: "4465.jpg", color: "#808080", persona: "6ft 4 Giant." },
+            { handle: "@CashAlphaV", name: "Cash Alpha V", pfp: "4466.jpg", color: "#0000ff", persona: "Muscle and drain." },
+            { handle: "@OliveRioter", name: "Lord Hørns", pfp: "4467.jpg", color: "#964B00", persona: "BBC Master." },
+            { handle: "@CashAlphaVictor", name: "Alpha Victor", pfp: "4470.jpg", color: "#ff0000", persona: "British Alpha." },
+            { handle: "@ImMasterCharles", name: "Master Charles", pfp: "4471.jpg", color: "#ffff00", persona: "Australian Athlete." },
+            { handle: "@AlphagodmasonX", name: "Muscle Godd", pfp: "4472.jpg", color: "#ffa500", persona: "19yo Alpha." },
+            { handle: "@GoonerSunny", name: "Sunny Blaze", pfp: "4473.jpg", color: "#ff69b4", persona: "Mind-rot." }
+        ];
+
+        let balance = parseFloat(localStorage.getItem('fakeBalance')) || 1000;
+        let wasted = parseFloat(localStorage.getItem('totalWasted')) || 0;
+        let histories = JSON.parse(localStorage.getItem('chats')) || {};
+        let activeHandle = localStorage.getItem('activeHandle') || doms[0].handle;
+        let lockoutSeconds = parseInt(localStorage.getItem('lockoutTime')) || 0;
+        let pendingDistraction = null;
+
+        function saveAll() {
+            localStorage.setItem('fakeBalance', balance);
+            localStorage.setItem('totalWasted', wasted);
+            localStorage.setItem('chats', JSON.stringify(histories));
+            localStorage.setItem('activeHandle', activeHandle);
+            localStorage.setItem('lockoutTime', lockoutSeconds);
+        }
+
+        function init() {
+            doms.forEach(d => { if(!histories[d.handle]) histories[d.handle] = []; });
+            switchChat(activeHandle);
+            updateUI();
+            startDistractions();
+            if (lockoutSeconds > 0) showLockout(true);
+        }
+
+        function updateUI() {
+            document.getElementById('bal').innerText = `$${balance.toFixed(2)}`;
+            document.getElementById('waste').innerText = `$${wasted.toFixed(2)}`;
+            const r = wasted > 10000 ? "TOTAL LOSS" : wasted > 5000 ? "INSOLVENT WRECK" : "DEBT SLAVE";
+            document.getElementById('sub-rank').innerText = r;
+            saveAll();
+        }
+
+        function switchChat(handle) {
+            activeHandle = handle;
+            const d = doms.find(x => x.handle === handle);
+            document.getElementById('chat-header').innerText = d.name;
+            document.getElementById('chat-header').style.color = d.color;
+            renderInbox();
+            renderMessages();
+        }
+
+        function renderInbox() {
+            document.getElementById('inbox-list').innerHTML = doms.map(d => `
+                <div class="inbox-item ${d.handle === activeHandle ? 'active' : ''} ${pendingDistraction === d.handle ? 'ping' : ''}" onclick="switchChat('${d.handle}')">
+                    <img src="${d.pfp}"><strong>${d.name}</strong>
+                </div>`).join('');
+        }
+
+        function renderMessages() {
+            const box = document.getElementById('chat-box');
+            box.innerHTML = (histories[activeHandle] || []).map(m => `<div class="msg ${m.role === 'user' ? 'user-msg' : 'dom-msg'}">${m.text}</div>`).join('');
+            box.scrollTop = box.scrollHeight;
+        }
+
+        async function sendChat() {
+            const input = document.getElementById('chat-in');
+            if(!input.value || balance < 10) return;
+            const val = input.value; input.value = "";
+            balance -= 10; wasted += 10;
+            histories[activeHandle].push({role:'user', text: val});
+            updateUI(); renderMessages();
+            
+            const d = doms.find(x => x.handle === activeHandle);
+            const resp = await fetch("https://api.groq.com/openai/v1/chat/completions", {
+                method: "POST",
+                headers: {"Authorization": `Bearer ${GROQ_API_KEY}`, "Content-Type": "application/json"},
+                body: JSON.stringify({
+                    "model": MODEL_ID,
+                    "messages": [{"role": "system", "content": `Roleplay as ${d.name}. ${d.persona}`}, {"role": "user", "content": val}]
+                })
+            });
+            const data = await resp.json();
+            histories[activeHandle].push({role:'dom', text: data.choices[0].message.content});
+            renderMessages(); saveAll();
+        }
+
+        async function sendTribute(amt) {
+            if(balance < amt) return;
+            balance -= amt; wasted += amt;
+            histories[activeHandle].push({role:'user', text: `*Sends $${amt} tribute*`});
+            updateUI(); renderMessages();
+            const d = doms.find(x => x.handle === activeHandle);
+            const resp = await fetch("https://api.groq.com/openai/v1/chat/completions", {
+                method: "POST",
+                headers: {"Authorization": `Bearer ${GROQ_API_KEY}`, "Content-Type": "application/json"},
+                body: JSON.stringify({
+                    "model": MODEL_ID,
+                    "messages": [{"role": "system", "content": `Roleplay as ${d.name}. User sent $${amt}.`}]
+                })
+            });
+            const data = await resp.json();
+            histories[activeHandle].push({role:'dom', text: data.choices[0].message.content});
+            renderMessages();
+        }
+
+        function getTask() {
+            const dom = doms[Math.floor(Math.random()*doms.length)];
+            const tasks = ["Stare at Sapnap's feet.", "Send $100 tribute.", "Write 'I am worthless' 50x.", "Drain $50 for Cellbit."];
+            document.getElementById('task-display').innerText = tasks[Math.floor(Math.random()*tasks.length)];
+            document.getElementById('gen-btn').disabled = true;
+            let left = 300;
+            const t = setInterval(() => {
+                left--;
+                let m = Math.floor(left/60), s = left%60;
+                document.getElementById('timer').innerText = `${m}:${s<10?'0':''}${s}`;
+                if(left <= 0) { clearInterval(t); document.getElementById('comp-btn').disabled = false; }
+            }, 1000);
+        }
+
+        function completeTask() {
+            balance += 200; updateUI();
+            document.getElementById('gen-btn').disabled = false;
+            document.getElementById('comp-btn').disabled = true;
+            document.getElementById('task-display').innerText = "TASK COMPLETED.";
+        }
+
+        function startDistractions() {
+            setTimeout(() => {
+                const d = doms[Math.floor(Math.random()*doms.length)];
+                pendingDistraction = d.handle;
+                renderInbox();
+                setTimeout(() => {
+                    if(pendingDistraction === d.handle) { balance -= 25; updateUI(); }
+                    pendingDistraction = null; renderInbox();
+                    startDistractions();
+                }, 10000);
+            }, 45000);
+        }
+
+        function checkLabor(e) {
+            if(e.key === 'Enter') {
+                if(e.target.value === document.getElementById('phrase-to-type').innerText) {
+                    lockoutSeconds -= 60;
+                } else { lockoutSeconds += 120; }
+                e.target.value = "";
+            }
+        }
+    </script>
+</body>
+</html>
