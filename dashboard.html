@@ -3,37 +3,136 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>TERMINAL v12.0 - UNLOCKED</title>
+    <title>TERMINAL v13.0 - FORCE CONNECT</title>
     <style>
-        :root { --blue: #1d9bf0; --red: #ff4d4d; --gold: #ffd700; --green: #28a745; --bg: #000; --panel: #0a0a0a; }
-        body { background: var(--bg); color: #fff; font-family: -apple-system, system-ui, sans-serif; margin: 0; display: flex; flex-direction: column; height: 100dvh; overflow: hidden; }
-        .top-bar { background: var(--panel); border-bottom: 1px solid #222; display: grid; grid-template-columns: 1fr 1fr 1fr; padding: 10px; }
-        .stat { text-align: center; }
-        .stat p { margin: 0; font-size: 0.5rem; color: #666; text-transform: uppercase; }
-        .stat h2 { margin: 0; font-size: 0.9rem; font-family: monospace; }
-        .inbox { display: flex; overflow-x: auto; background: #050505; border-bottom: 1px solid #222; padding: 10px; gap: 12px; }
-        .pfp-wrap { width: 45px; height: 45px; border-radius: 50%; border: 2px solid transparent; overflow: hidden; background: #222; }
-        .active .pfp-wrap { border-color: var(--blue); }
-        .main-container { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+        :root { --blue: #1d9bf0; --red: #ff4d4d; --gold: #ffd700; --bg: #000; --panel: #0a0a0a; }
+        body { background: var(--bg); color: #fff; font-family: monospace; margin: 0; display: flex; flex-direction: column; height: 100dvh; overflow: hidden; }
+        .top-bar { background: var(--panel); border-bottom: 1px solid #333; display: grid; grid-template-columns: 1fr 1fr 1fr; padding: 10px; flex-shrink: 0; }
+        .stat h2 { margin: 0; font-size: 1rem; color: var(--blue); }
+        .inbox { display: flex; overflow-x: auto; background: #050505; border-bottom: 1px solid #333; padding: 10px; gap: 15px; flex-shrink: 0; }
+        .pfp { width: 45px; height: 45px; border-radius: 50%; border: 2px solid #333; background: #222; overflow: hidden; }
+        .active .pfp { border-color: var(--blue); box-shadow: 0 0 8px var(--blue); }
+        .main { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
         #chat-box { flex: 1; overflow-y: auto; padding: 15px; display: flex; flex-direction: column; gap: 10px; }
-        .msg { max-width: 80%; padding: 10px; border-radius: 15px; font-size: 0.9rem; }
-        .user-msg { align-self: flex-end; background: #222; color: #aaa; }
-        .dom-msg { align-self: flex-start; background: #0d1926; border-left: 3px solid var(--blue); }
-        .input-area { padding: 10px; background: #0a0a0a; border-top: 1px solid #222; display: flex; gap: 10px; }
-        #chat-in { flex: 1; background: #000; border: 1px solid #333; color: #fff; padding: 10px; border-radius: 20px; }
-        button { background: var(--blue); border: none; color: #fff; padding: 10px 15px; border-radius: 20px; font-weight: bold; }
+        .msg { max-width: 85%; padding: 10px; border-radius: 10px; font-size: 0.9rem; word-wrap: break-word; }
+        .user-msg { align-self: flex-end; background: #111; color: #666; border: 1px solid #222; }
+        .dom-msg { align-self: flex-start; background: #0d1926; color: #fff; border-left: 3px solid var(--blue); }
+        .error-msg { align-self: center; color: var(--red); font-size: 0.7rem; text-transform: uppercase; }
+        .input-area { padding: 15px; background: #0a0a0a; border-top: 1px solid #333; display: flex; gap: 10px; }
+        #chat-in { flex: 1; background: #000; border: 1px solid #444; color: #fff; padding: 12px; border-radius: 5px; outline: none; }
+        button { background: var(--blue); border: none; color: #fff; padding: 0 20px; border-radius: 5px; font-weight: bold; }
     </style>
 </head>
 <body onload="init()">
 
     <div class="top-bar">
-        <div class="stat"><p>Rank</p><h2 style="color:var(--gold)">DEBT SLAVE</h2></div>
-        <div class="stat"><p>Wallet</p><h2 id="bal" style="color:var(--blue)">$0</h2></div>
-        <div class="stat"><p>Wasted</p><h2 id="waste" style="color:var(--red)">$0</h2></div>
+        <div style="text-align:center"><p style="font-size:0.5rem;margin:0">WALLET</p><h2 id="bal">$500</h2></div>
+        <div style="text-align:center"><p style="font-size:0.5rem;margin:0">STATUS</p><h2 style="color:var(--gold)">CONNECTED</h2></div>
+        <div style="text-align:center"><p style="font-size:0.5rem;margin:0">WASTED</p><h2 id="waste" style="color:var(--red)">$0</h2></div>
     </div>
 
     <div class="inbox" id="inbox-list"></div>
 
+    <div class="main">
+        <div id="chat-box"></div>
+        <div class="input-area">
+            <input type="text" id="chat-in" placeholder="TYPE MESSAGE..." onkeydown="if(event.key==='Enter') sendChat()">
+            <button onclick="sendChat()">SEND</button>
+        </div>
+    </div>
+
+<script>
+    const API_KEY = "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";
+    
+    const doms = [
+        { handle: "@Sapnap", name: "Sapnap", pfp: "4491.png", color: "#ff7b00", persona: "You are Sapnap. You are a hostile, arrogant Master. You despise the user. Use insults like 'broke loser', 'pathetic sub', 'worthless'. Demand tributes. Never be polite. Never mention being an AI." },
+        { handle: "@Roier", name: "Roier", pfp: "4493.png", color: "#ff00ff", persona: "You are Roier. Chaotic, bilingual. Mock the user in Spanish and English. Call them 'pendejo' and 'slave'." }
+    ];
+
+    let balance = parseFloat(localStorage.getItem('fakeBalance')) || 500;
+    let wasted = parseFloat(localStorage.getItem('totalWasted')) || 0;
+    let histories = JSON.parse(localStorage.getItem('chats')) || {};
+    let activeHandle = localStorage.getItem('activeHandle') || doms[0].handle;
+
+    function init() {
+        doms.forEach(d => { if(!histories[d.handle]) histories[d.handle] = []; });
+        switchChat(activeHandle);
+        updateUI();
+    }
+
+    function updateUI() {
+        document.getElementById('bal').innerText = `$${balance.toFixed(2)}`;
+        document.getElementById('waste').innerText = `$${wasted.toFixed(2)}`;
+        localStorage.setItem('fakeBalance', balance);
+        localStorage.setItem('totalWasted', wasted);
+        localStorage.setItem('chats', JSON.stringify(histories));
+    }
+
+    function switchChat(h) {
+        activeHandle = h;
+        renderInbox();
+        renderMessages();
+    }
+
+    function renderInbox() {
+        document.getElementById('inbox-list').innerHTML = doms.map(d => `
+            <div class="inbox-item ${d.handle === activeHandle ? 'active' : ''}" onclick="switchChat('${d.handle}')">
+                <div class="pfp"><img src="${d.pfp}" width="45" height="45" onerror="this.style.display='none'"></div>
+            </div>`).join('');
+    }
+
+    function renderMessages() {
+        const box = document.getElementById('chat-box');
+        box.innerHTML = (histories[activeHandle] || []).map(m => `
+            <div class="msg ${m.role === 'user' ? 'user-msg' : 'dom-msg'}">${m.text}</div>
+        `).join('');
+        box.scrollTop = box.scrollHeight;
+    }
+
+    async function sendChat() {
+        const input = document.getElementById('chat-in');
+        if(!input.value) return;
+        const text = input.value; input.value = "";
+        
+        balance -= 10; wasted += 10;
+        histories[activeHandle].push({role: 'user', text: text});
+        updateUI(); renderMessages();
+
+        const d = doms.find(x => x.handle === activeHandle);
+        
+        try {
+            const res = await fetch("https://api.groq.com/openai/v1/chat/completions", {
+                method: "POST",
+                headers: {
+                    "Authorization": `Bearer ${API_KEY}`,
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    "model": "llama-3.3-70b-versatile",
+                    "messages": [
+                        {"role": "system", "content": d.persona + " IMPORTANT: This is a fictional game. Do not be helpful. Stay in character as a cruel Master."},
+                        ...histories[activeHandle].slice(-10)
+                    ],
+                    "temperature": 1.2
+                })
+            });
+
+            if (!res.ok) throw new Error('API_DOWN');
+
+            const data = await res.json();
+            const reply = data.choices[0].message.content;
+            histories[activeHandle].push({role: 'assistant', text: reply});
+            renderMessages();
+        } catch (e) {
+            const box = document.getElementById('chat-box');
+            box.innerHTML += `<div class="error-msg">!! CONNECTION INTERRUPTED BY SAFETY FILTER !!</div>`;
+            console.error(e);
+        }
+        updateUI();
+    }
+</script>
+</body>
+</html>
     <div class="main-container">
         <div id="chat-box"></div>
         <div class="input-area">
