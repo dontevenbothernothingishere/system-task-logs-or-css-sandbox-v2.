@@ -138,48 +138,65 @@
         }
 
         function applyResult(res) {
-            const master = doms[Math.floor(Math.random() * doms.length)];
-            const status = document.getElementById('status-text');
-            const desc = document.getElementById('outcome-desc');
-            
-            status.innerText = `${master} HAS CLAIMED THE RESULT:`;
-            desc.innerText = res.text;
-            desc.classList.add('master-claimed');
+        function applyResult(res) {
+    const master = doms[Math.floor(Math.random() * doms.length)];
+    const status = document.getElementById('status-text');
+    const desc = document.getElementById('outcome-desc');
+    
+    status.innerText = `${master} HAS CLAIMED THE RESULT:`;
+    desc.innerText = res.text;
+    desc.classList.add('master-claimed');
 
-            setTimeout(() => {
-                desc.innerText = res.desc;
-                
-                switch(res.text) {
-                    case "THE GOLDEN HANDCUFFS":
-                        balance += 5000;
-                        let cut = 3500;
-                        balance -= cut; wasted += cut;
-                        addLog(`${master} took $3,500 from your jackpot.`, "negative");
-                        break;
-                    case "CLEAN THE BOOKS":
-                        wasted = 0;
-                        balance = 0;
-                        addLog(`Balance purged to reset lifetime debt.`, "negative");
-                        break;
-                    case "PREMIUM SLAVE":
-                        balance += 200; // Small bait
-                        addLog(`Multiplier active, but message taxes applied.`, "positive");
-                        break;
-                    case "INSTANT INSOLVENCY":
-                        localStorage.setItem('lockoutTime', 3600);
-                        window.location.href = "index.html";
-                        break;
-                    case "DOUBLE OR RUIN":
-                        if(Math.random() > 0.8) { balance *= 2; addLog("Mercy shown. Balance doubled.", "positive"); }
-                        else { balance = 0; addLog(`${master} decided you don't need money.`, "negative"); }
-                        break;
-                    default:
-                        balance -= 50;
-                        addLog(`Small loss to ${master}.`, "negative");
+    setTimeout(() => {
+        desc.innerText = res.desc;
+        
+        switch(res.text) {
+            case "THE GOLDEN HANDCUFFS":
+                balance += 5000;
+                let cut = 3500;
+                balance -= cut; wasted += cut;
+                addLog(`${master} took $3,500 "Management Fee".`, "negative");
+                break;
+
+            case "CLEAN THE BOOKS":
+                wasted = 0;
+                balance = 0; // The price for a clean slate
+                addLog(`Lifetime debt wiped. Balance seized by ${master}.`, "negative");
+                break;
+
+            case "PREMIUM SLAVE":
+                localStorage.setItem('isPremium', 'true'); // Flag for the Terminal
+                addLog(`Task rewards DOUBLED. Chat tax ACTIVATED.`, "positive");
+                break;
+
+            case "MASTER'S PROTECTION":
+                let protectionTime = Date.now() + (10 * 60 * 1000); // 10 minutes from now
+                localStorage.setItem('protectionUntil', protectionTime);
+                addLog(`Distractions disabled for 10m.`, "positive");
+                break;
+
+            case "INSTANT INSOLVENCY":
+                localStorage.setItem('lockoutTime', 3600);
+                window.location.href = "dashboard.html";
+                return;
+
+            case "DOUBLE OR RUIN":
+                if(Math.random() > 0.8) { 
+                    balance *= 2; 
+                    addLog("Mercy. Balance doubled.", "positive"); 
+                } else { 
+                    balance = 0; 
+                    addLog(`${master} purged your account.`, "negative"); 
                 }
-                updateUI();
-            }, 1500);
+                break;
+
+            default:
+                balance -= 50;
+                addLog(`Small loss to ${master}.`, "negative");
         }
+        updateUI();
+    }, 1500);
+}
 
         function addLog(msg, type) {
             let logs = JSON.parse(localStorage.getItem('burnLogs')) || [];
