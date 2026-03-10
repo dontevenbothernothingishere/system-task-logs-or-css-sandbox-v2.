@@ -3,37 +3,228 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>TERMINAL MOBILE v4.9</title>
+    <title>TERMINAL MOBILE v6.5</title>
     <style>
         :root { --blue: #1d9bf0; --red: #ff4d4d; --gold: #ffd700; --green: #28a745; --bg: #000; --panel: #0a0a0a; }
+        body { background: var(--bg); color: #fff; font-family: -apple-system, system-ui, sans-serif; margin: 0; display: flex; flex-direction: column; height: 100dvh; overflow: hidden; }
         
-        body { 
-            background: var(--bg); color: #fff; font-family: -apple-system, system-ui, sans-serif;
-            margin: 0; display: flex; flex-direction: column; height: 100dvh; overflow: hidden; 
-        }
-
-        .top-bar { 
-            background: var(--panel); border-bottom: 1px solid #222; 
-            display: grid; grid-template-columns: 1fr 1fr 1fr; padding: 10px 5px; flex-shrink: 0;
-        }
+        /* Stats Bar */
+        .top-bar { background: var(--panel); border-bottom: 1px solid #222; display: grid; grid-template-columns: 1fr 1fr 1fr; padding: 10px 5px; flex-shrink: 0; }
         .stat { text-align: center; }
         .stat p { margin: 0; font-size: 0.5rem; color: #666; text-transform: uppercase; }
-        .stat h2 { margin: 0; font-size: 1rem; font-family: monospace; }
+        .stat h2 { margin: 0; font-size: 0.9rem; font-family: monospace; }
 
-        .inbox { 
-            display: flex; overflow-x: auto; background: #050505; 
-            border-bottom: 1px solid #222; padding: 10px 5px; gap: 12px;
-            scrollbar-width: none; -webkit-overflow-scrolling: touch; flex-shrink: 0;
-        }
-        .inbox::-webkit-scrollbar { display: none; }
-        .inbox-item { flex: 0 0 65px; display: flex; flex-direction: column; align-items: center; text-align: center; }
-        .inbox-item img { width: 45px; height: 45px; border-radius: 50%; border: 2px solid transparent; object-fit: cover; }
+        /* Inbox */
+        .inbox { display: flex; overflow-x: auto; background: #050505; border-bottom: 1px solid #222; padding: 10px 5px; gap: 12px; scrollbar-width: none; flex-shrink: 0; }
+        .inbox-item { flex: 0 0 60px; display: flex; flex-direction: column; align-items: center; text-align: center; }
+        .inbox-item img { width: 40px; height: 40px; border-radius: 50%; border: 2px solid transparent; object-fit: cover; }
         .inbox-item.active img { border-color: var(--blue); }
 
-        .main-container { display: flex; flex-direction: column; flex: 1; overflow: hidden; }
-        .chat-section { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
-        #chat-header { padding: 8px; font-weight: bold; font-size: 0.8rem; border-bottom: 1px solid #111; text-align: center; background: #080808; flex-shrink: 0; }
-        #chat-box { flex: 1; overflow-y: auto; padding: 15px; display: flex; flex-direction: column; gap: 10px; background: #000; }
+        /* Chat */
+        .main-container { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+        #chat-box { flex: 1; overflow-y: auto; padding: 15px; display: flex; flex-direction: column; gap: 10px; }
+        .msg { max-width: 85%; padding: 10px 14px; border-radius: 15px; font-size: 0.85rem; line-height: 1.4; }
+        .user-msg { align-self: flex-end; background: #222; color: #999; }
+        .dom-msg { align-self: flex-start; background: #0d1926; color: #fff; border-left: 3px solid var(--blue); }
+
+        /* Multi-Input Area */
+        .input-area { background: #0a0a0a; border-top: 1px solid #222; padding: 10px; display: flex; flex-direction: column; gap: 8px; flex-shrink: 0; }
+        .row { display: flex; gap: 8px; width: 100%; }
+        #tribute-amt { width: 60px; background: #111; border: 1px solid #222; color: var(--green); border-radius: 10px; padding: 5px; text-align: center; font-family: monospace; }
+        #chat-in { flex: 1; background: #000; border: 1px solid #333; color: #fff; padding: 10px 15px; border-radius: 20px; outline: none; }
+        .btn-send { background: var(--blue); border: none; border-radius: 50%; width: 40px; height: 40px; color: #fff; cursor: pointer; }
+        .btn-tribute { background: var(--green); border: none; border-radius: 20px; padding: 0 15px; color: #fff; font-weight: bold; font-size: 0.7rem; cursor: pointer; }
+
+        /* Labor Camp */
+        #lockout { display: none; position: fixed; inset: 0; background: #000; z-index: 10000; flex-direction: column; align-items: center; justify-content: center; padding: 20px; text-align: center; }
+        #labor-input { width: 85%; background: #111; color: #fff; border: 1px solid #333; padding: 15px; margin-top: 20px; font-size: 1.1rem; border-radius: 10px; }
+        .penalty { animation: shake 0.2s ease-in-out; border-color: var(--red) !important; }
+        @keyframes shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-10px); } 75% { transform: translateX(10px); } }
+        @keyframes fadeUp { 0% { opacity: 1; transform: translateY(0); } 100% { opacity: 0; transform: translateY(-50px); } }
+    </style>
+</head>
+<body onload="init()">
+
+    <div class="top-bar">
+        <div class="stat"><p>Sub Rank</p><h2 id="sub-rank" style="color:var(--gold)">...</h2></div>
+        <div class="stat"><p>Wallet</p><h2 id="bal" style="color:var(--blue)">$0</h2></div>
+        <div class="stat"><p>Wasted</p><h2 id="waste" style="color:var(--red)">$0</h2></div>
+    </div>
+
+    <div class="inbox" id="inbox-list"></div>
+
+    <div class="main-container">
+        <div id="chat-header" style="text-align:center; font-size:0.7rem; padding:5px; color:#555;"></div>
+        <div id="chat-box"></div>
+        <div class="input-area">
+            <div class="row">
+                <input type="number" id="tribute-amt" placeholder="0" min="1">
+                <button class="btn-tribute" onclick="handleCustomTribute()">SEND TRIBUTE</button>
+            </div>
+            <div class="row">
+                <input type="text" id="chat-in" placeholder="Message..." onkeydown="if(event.key==='Enter') sendChat()">
+                <button class="btn-send" onclick="sendChat()">➔</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="lockout">
+        <h1 style="color:red; margin:0;">INSOLVENT WASTE</h1>
+        <h2 id="work-clock" style="font-size:3.5rem; margin:10px 0; font-family:monospace;">00:00:00</h2>
+        <p id="phrase-to-type" style="color:var(--gold); font-weight:bold; margin-bottom:20px;"></p>
+        <input type="text" id="labor-input" autocomplete="off" placeholder="Type here..." onkeydown="checkLabor(event)">
+    </div>
+
+<script>
+    const GROQ_API_KEY = "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";
+    const DOMS = [
+        { handle: "@Sapnap", name: "Sapnap", color: "#ff7b00", persona: "Hostile, aggressive, demands tributes constantly." },
+        { handle: "@Roier", name: "Roier", color: "#ff00ff", persona: "Chaotic findom, bilingual mockery, loves watching you go broke." },
+        { handle: "@RossLynch", name: "Ross Lynch", color: "#ffd700", persona: "Cold, Hollywood Alpha, treats you like a bank account." },
+        { handle: "@Cellbit", name: "Cellbit", color: "#5d3fd3", persona: "Psychological findom, deconstructs your financial worth." },
+        { handle: "@Ares", name: "Ares", color: "#808080", persona: "Giant 6ft 4 Master, physical and financial domination." }
+    ];
+
+    let phrases = [
+        "I am a drainable ATM.", "My money belongs to my Masters.", "I am a pathetic debt slave.",
+        "Every dollar I earn is a tribute for Sapnap.", "I love being bankrupt for Master.",
+        "I am worth zero dollars.", "My bank account is Sapnap's property.", "I am a loser who loves to pay."
+    ];
+    // Populate to 300
+    for(let i=0; i<290; i++) phrases.push(`Entry #${i+100}: I am an insolvent slave to the Masters.`);
+
+    let balance = parseFloat(localStorage.getItem('fakeBalance')) || 1000;
+    let wasted = parseFloat(localStorage.getItem('totalWasted')) || 0;
+    let histories = JSON.parse(localStorage.getItem('chats')) || {};
+    let activeHandle = localStorage.getItem('activeHandle') || DOMS[0].handle;
+    let lockoutSeconds = parseInt(localStorage.getItem('lockoutTime')) || 0;
+    let isLockoutActive = false;
+
+    function init() {
+        DOMS.forEach(d => { if(!histories[d.handle]) histories[d.handle] = []; });
+        switchChat(activeHandle);
+        updateUI();
+        
+        setInterval(() => {
+            if (balance <= 0 && !isLockoutActive) triggerLockout(3600);
+            if (isLockoutActive && lockoutSeconds > 0) {
+                lockoutSeconds--;
+                updateLockoutUI();
+                if (lockoutSeconds <= 0) {
+                    isLockoutActive = false;
+                    document.getElementById('lockout').style.display = 'none';
+                    balance = 100; updateUI();
+                }
+            }
+        }, 1000);
+    }
+
+    function updateUI() {
+        document.getElementById('bal').innerText = `$${balance.toFixed(2)}`;
+        document.getElementById('waste').innerText = `$${wasted.toFixed(2)}`;
+        document.getElementById('sub-rank').innerText = wasted > 5000 ? "INSOLVENT WRECK" : "DEBT SLAVE";
+        localStorage.setItem('fakeBalance', balance);
+        localStorage.setItem('totalWasted', wasted);
+        localStorage.setItem('lockoutTime', lockoutSeconds);
+    }
+
+    function switchChat(h) {
+        activeHandle = h;
+        const d = DOMS.find(x => x.handle === h);
+        document.getElementById('chat-header').innerText = d.name;
+        renderInbox(); renderMessages();
+    }
+
+    function renderInbox() {
+        document.getElementById('inbox-list').innerHTML = DOMS.map(d => `
+            <div class="inbox-item ${d.handle === activeHandle ? 'active' : ''}" onclick="switchChat('${d.handle}')">
+                <div style="width:40px; height:40px; background:#222; border-radius:50%; border:1px solid ${d.color}"></div>
+                <strong style="font-size:0.5rem; margin-top:3px;">${d.name}</strong>
+            </div>`).join('');
+    }
+
+    function renderMessages() {
+        const box = document.getElementById('chat-box');
+        box.innerHTML = (histories[activeHandle] || []).map(m => `<div class="msg ${m.role === 'user' ? 'user-msg' : 'dom-msg'}">${m.text}</div>`).join('');
+        box.scrollTop = box.scrollHeight;
+    }
+
+    async function sendChat() {
+        const input = document.getElementById('chat-in');
+        if(!input.value || balance < 10) return;
+        const val = input.value; input.value = "";
+        balance -= 10; wasted += 10;
+        histories[activeHandle].push({role:'user', text: val});
+        updateUI(); renderMessages();
+        
+        const d = DOMS.find(x => x.handle === activeHandle);
+        const resp = await fetch("https://api.groq.com/openai/v1/chat/completions", {
+            method: "POST",
+            headers: {"Authorization": `Bearer ${GROQ_API_KEY}`, "Content-Type": "application/json"},
+            body: JSON.stringify({
+                "model": MODEL_ID,
+                "messages": [{"role": "system", "content": `Roleplay as ${d.name}. ${d.persona}`}, {"role": "user", "content": val}]
+            })
+        });
+        const data = await resp.json();
+        histories[activeHandle].push({role:'dom', text: data.choices[0].message.content});
+        renderMessages();
+    }
+
+    async function handleCustomTribute() {
+        const amtInput = document.getElementById('tribute-amt');
+        const amt = parseFloat(amtInput.value);
+        if(isNaN(amt) || amt <= 0 || balance < amt) return;
+        
+        balance -= amt; wasted += amt;
+        histories[activeHandle].push({role:'user', text: `*TRIBUTE SENT: $${amt}*`});
+        amtInput.value = "";
+        updateUI(); renderMessages();
+
+        const d = DOMS.find(x => x.handle === activeHandle);
+        const resp = await fetch("https://api.groq.com/openai/v1/chat/completions", {
+            method: "POST",
+            headers: {"Authorization": `Bearer ${GROQ_API_KEY}`, "Content-Type": "application/json"},
+            body: JSON.stringify({
+                "model": MODEL_ID,
+                "messages": [{"role": "system", "content": `Roleplay as ${d.name}. User sent $${amt}. Mock them, say it's not enough.`}]
+            })
+        });
+        const data = await resp.json();
+        histories[activeHandle].push({role:'dom', text: data.choices[0].message.content});
+        renderMessages();
+    }
+
+    function triggerLockout(secs) {
+        lockoutSeconds = secs; isLockoutActive = true;
+        document.getElementById('lockout').style.display = 'flex';
+        newPhrase(); updateLockoutUI();
+    }
+
+    function newPhrase() { document.getElementById('phrase-to-type').innerText = phrases[Math.floor(Math.random()*phrases.length)]; }
+
+    function updateLockoutUI() {
+        let h = Math.floor(lockoutSeconds/3600), m = Math.floor((lockoutSeconds%3600)/60), s = lockoutSeconds%60;
+        document.getElementById('work-clock').innerText = `${h.toString().padStart(2,'0')}:${m.toString().padStart(2,'0')}:${s.toString().padStart(2,'0')}`;
+    }
+
+    function checkLabor(e) {
+        if(e.key === 'Enter') {
+            const input = document.getElementById('labor-input');
+            if(input.value === document.getElementById('phrase-to-type').innerText) {
+                lockoutSeconds = Math.max(0, lockoutSeconds - 60);
+                newPhrase();
+            } else {
+                lockoutSeconds += 120;
+                input.classList.add('penalty');
+                setTimeout(() => input.classList.remove('penalty'), 200);
+            }
+            input.value = ""; updateLockoutUI();
+        }
+    }
+</script>
+</body>
+</html>
         
         .msg { max-width: 85%; padding: 10px 14px; border-radius: 15px; font-size: 0.85rem; line-height: 1.4; }
         .user-msg { align-self: flex-end; background: #222; color: #999; border-bottom-right-radius: 2px; }
