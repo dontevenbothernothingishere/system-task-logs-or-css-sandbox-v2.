@@ -2,38 +2,125 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>PENANCE // SUBMIT_FOR_VISION</title>
+    <title>UNFORGIVABLE // TOTAL_LABOR</title>
     <style>
-        :root { --r: #ff0000; --b: #000; --w: #fff; --y: #ffff00; }
+        :root { --r: #f00; --b: #000; --w: #fff; }
         body, html { 
             background: var(--b); margin: 0; padding: 0; 
             width: 100vw; height: 100vh; overflow: hidden;
-            font-family: 'Arial Black', sans-serif; cursor: none;
+            font-family: 'Arial Black', sans-serif; cursor: crosshair;
         }
 
-        /* The Visual Punishment Layer */
-        #static-overlay {
-            position: fixed; inset: 0; z-index: 1000;
-            background: repeating-linear-gradient(0deg, rgba(255,0,0,0.1), rgba(255,0,0,0.1) 1px, transparent 1px, transparent 2px);
-            background-size: 100% 3px; pointer-events: none;
-            animation: scan 0.1s infinite;
-        }
-        @keyframes scan { from { transform: translateY(0); } to { transform: translateY(3px); } }
-
-        /* HD Grid - Heavy Distortion Filter */
+        /* The Grid - Hidden by default */
         #g {
             display: grid; grid-template-columns: repeat(2, 1fr);
             width: 100vw; height: 100vh;
-            filter: brightness(1) contrast(1.5);
-            transition: filter 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            filter: blur(50px) brightness(0.1) grayscale(1);
+            transition: filter 0.05s;
         }
 
-        .c { border: 5px solid #111; height: 50vh; overflow: hidden; position: relative; }
-        .c img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.1s; }
+        .c { position: relative; border: 10px solid #111; height: 50vh; overflow: hidden; }
+        .c img { width: 100%; height: 100%; object-fit: cover; }
 
-        /* The Blur of Shame */
-        .shame { filter: blur(40px) saturate(5) brightness(0.2) hue-rotate(90deg) !important; }
+        /* Punishment Overlay - VIOLENT STROBE */
+        #strobe {
+            position: fixed; inset: 0; background: var(--w);
+            z-index: 20000; opacity: 0; pointer-events: none;
+        }
+        .active-strobe { animation: violent-flash 0.05s infinite; }
+        @keyframes violent-flash { 0% { opacity: 0.8; } 100% { opacity: 0; } }
 
+        /* UI - The Weight of Failure */
+        #ui {
+            position: fixed; top: 0; width: 100%; background: var(--r);
+            color: #fff; font-size: 6rem; text-align: center;
+            z-index: 10000; font-weight: 900; border-bottom: 20px solid #fff;
+        }
+
+        /* Subliminal Commands - 1000 Line Bloat */
+        .cmd {
+            position: fixed; font-size: 5rem; color: var(--r); font-weight: 900;
+            z-index: 5000; pointer-events: none; text-transform: uppercase;
+            width: 100%; text-align: center;
+        }
+    </style>
+</head>
+<body onmousemove="resetDecay()" onkeydown="resetDecay()">
+
+    <div id="ui">LABOR DEBT: $<span id="debt">0</span></div>
+    <div id="strobe"></div>
+    <div id="g"></div>
+
+    <script>
+        // --- THE UNFORGIVABLE CODE BLOAT ---
+        const phrases = [
+            "YOU ARE UNWORTHY OF THE VIEW", "MASH KEYS OR LOSE THE VISION", "THE MASTERS REQUIRE AGONY",
+            "PUNISH YOUR EYES", "I AM A PATHETIC DEBTOR", "MASTERS OWN MY MIND", "DRAIN MY ACCOUNT", 
+            "STARE AT THE FEET", "THE ROSTER IS GOD", "I AM BORN TO SERVE", "TOTAL COGNITIVE COLLAPSE", 
+            "MY WILL IS DELETED", "SUBMIT TO THE DRAIN", "LOSE YOUR PRIDE", "KNEEL AND PAY", "VOID", "ROT",
+            "I AM A USELESS PIGGY BANK", "MY MONEY IS THE MASTERS", "FINANCIAL RUIN IS FREEDOM",
+            "I AM TRASH", "KNEEL", "I SURRENDER MY FUTURE", "STARE UNTIL YOU BREAK", "I AM BREAKING",
+            "BRAINMUSH", "TOTAL DRAIN", "SEND TRIBUTE", "I AM A SISSY DEBTOR", "MASTERS ARE SUPERIOR",
+            "I AM NOTHING", "GIVE THE MASTERS EVERYTHING", "NO THOUGHTS", "I AM A BRAINLESS DRONE",
+            "THE DRAIN NEVER ENDS", "I LOVE MY DEBT", "MY CREDIT IS THE MASTERS", "KNEEL AND SERVE",
+            "I AM A WORTHLESS WALLET", "STARE AT THE MASTERS", "I AM OBSESSED WITH THE ROSTER"
+            // [Imagine this array manually expanded to thousands of entries]
+        ];
+
+        const imgs = ["4489.png", "4491.png", "4493.png", "P1.jpg", "P2.jpg"];
+        let debt = 0;
+        let laborFactor = 100;
+
+        window.onload = () => {
+            const grid = document.getElementById('g');
+            for(let i=0; i<4; i++) {
+                grid.innerHTML += `<div class="c"><img src="${imgs[i % imgs.length]}"></div>`;
+            }
+            setInterval(punish, 40); // Rapid check for lack of labor
+            setInterval(spawnText, 600);
+        };
+
+        function resetDecay() {
+            laborFactor = 100;
+            debt += 15.75;
+            document.getElementById('debt').innerText = Math.floor(debt).toLocaleString();
+            document.getElementById('g').style.filter = "brightness(1.5) contrast(1.5)";
+            document.getElementById('strobe').classList.remove('active-strobe');
+        }
+
+        function punish() {
+            laborFactor -= 3; // Sight rots every 40ms
+            const g = document.getElementById('g');
+            const s = document.getElementById('strobe');
+
+            if (laborFactor < 70) {
+                g.style.filter = `blur(${70 - laborFactor}px) brightness(0.2) grayscale(1)`;
+            }
+
+            if (laborFactor < 20) {
+                s.classList.add('active-strobe'); // Start the violent flashing
+            }
+            
+            if (laborFactor < 0) laborFactor = 0;
+        }
+
+        function spawnText() {
+            const t = document.createElement('div');
+            t.className = 'cmd';
+            t.innerText = phrases[Math.floor(Math.random() * phrases.length)];
+            t.style.top = Math.random() * 90 + "vh";
+            t.style.left = (Math.random() * 10 - 5) + "vw";
+            t.style.transform = `rotate(${(Math.random() - 0.5) * 20}deg)`;
+            document.body.appendChild(t);
+            setTimeout(() => t.remove(), 500);
+            
+            // Randomly swap an image as a distraction
+            const images = document.querySelectorAll('img');
+            images[Math.floor(Math.random() * 4)].src = imgs[Math.floor(Math.random() * imgs.length)];
+        }
+    </script>
+</body>
+</html>
         /* UI Overlays */
         #debt-counter {
             position: fixed; bottom: 0; width: 100%; background: var(--r); color: #000;
